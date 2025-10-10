@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="Reliance Nippon Life — Agency Officer analytics dashboard & 6-month salary calculator" />
+    <title>Reliance Nippon Life Insurance Company — Agent Dashboard</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              rnlic: {
+                blue: '#004085', /* primary deep blue */
+                sky: '#0ea5e9',  /* cyan/sky */
+                orange: '#f97316',
+                red: '#ef4444',
+                light: '#f8fafc',
+                slate: '#64748b'
+              }
+            },
+            boxShadow: {
+              'card': '0 12px 30px -12px rgba(2,20,62,0.18)',
+              'float': '0 20px 50px -20px rgba(2,20,62,0.12)'
+            },
+            animation: {
+              'float-slow': 'float 6s ease-in-out infinite',
+              'fade-in-up': 'fadeUp .45s ease both'
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Chart.js for lightweight charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      :root{
+        --blue: #004085;
+        --sky: #0ea5e9;
+        --orange: #f97316;
+        --red: #ef4444;
+        --muted: #64748b;
+      }
+
+      body{ font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg,#ffffff 0%, #f8fafc 100%); }
+
+      @keyframes float { 0%{ transform: translateY(0);} 50%{ transform: translateY(-8px);} 100%{ transform: translateY(0);} }
+      @keyframes fadeUp { from{ opacity:0; transform: translateY(10px);} to{ opacity:1; transform: translateY(0);} }
+
+      /* accessible focus ring */
+      :focus{ outline: 3px solid rgba(14,165,233,0.18); outline-offset: 3px; }
+
+      /* small utility style for card glass */
+      .glass { background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85)); border: 1px solid rgba(2,20,62,0.04); box-shadow: var(--tw-ring-offset-shadow,0 1px 2px -1px rgba(2,20,62,0.04)), var(--tw-shadow); }
+
+      /* helper to keep charts responsive */
+      .chart-wrap{ min-height: 160px; }
+
+      /* small badge */
+      .badge { font-weight:600; font-size:.75rem; padding:.25rem .5rem; border-radius:999px; }
+    </style>
+  </head>
+  <body class="text-slate-800">
+
+    <!-- Sticky header -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-sm border-b border-slate-100">
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center p-2 rounded-lg bg-rnlic-blue/5">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" class="text-rnlic-blue" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="6" fill="url(#g)" />
+                <defs>
+                  <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0" stop-color="#004085" />
+                    <stop offset="1" stop-color="#0ea5e9" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-rnlic-blue">Reliance Nippon Life Insurance Company</div>
+              <div class="text-xs text-rnlic-slate">Agency Officer Dashboard</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="exportBtn" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-rnlic-orange text-white font-semibold hover:shadow-lg focus:outline-none">Export CSV</button>
+            <button id="helpBtn" class="p-2 rounded-lg bg-white border border-slate-100 shadow-sm text-rnlic-blue hover:bg-rnlic-blue/5">Help</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Hero / Controls -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 items-start">
+        <article class="lg:col-span-2 glass rounded-2xl p-6 animate-fade-in-up">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h1 class="text-2xl md:text-3xl font-bold text-rnlic-blue">Agency Officer Salary Calculator</h1>
+              <p class="mt-1 text-sm text-rnlic-slate">Estimate your 6-month earnings, visualize performance, and explore growth levers.</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-slate-500">As of</div>
+              <div id="today" class="text-sm font-semibold">--</div>
+            </div>
+          </div>
+
+          <!-- Quick KPIs -->
+          <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="p-4 rounded-xl bg-white shadow-card">
+              <div class="text-xs text-slate-500">6-Month Total</div>
+              <div id="kpiTotal" class="text-xl font-bold text-rnlic-blue">₹0</div>
+              <div class="text-xs text-slate-400">Projected earnings</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white shadow-card">
+              <div class="text-xs text-slate-500">Avg / Month</div>
+              <div id="kpiAvg" class="text-xl font-bold text-rnlic-blue">₹0</div>
+              <div class="text-xs text-slate-400">Average</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white shadow-card">
+              <div class="text-xs text-slate-500">Policies Sold</div>
+              <div id="kpiPolicies" class="text-xl font-bold text-rnlic-orange">0</div>
+              <div class="text-xs text-slate-400">Across 6 months</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white shadow-card">
+              <div class="text-xs text-slate-500">Best Month</div>
+              <div id="kpiMax" class="text-xl font-bold text-rnlic-red">₹0</div>
+              <div class="text-xs text-slate-400">Peak income</div>
+            </div>
+          </div>
+
+          <!-- Charts -->
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-white shadow-card chart-wrap">
+              <div class="flex items-center justify-between mb-2">
+                <div class="text-sm font-semibold">6-Month Income Trend</div>
+                <div class="text-xs text-slate-400">FYC + MPI + Bonus + Fixed</div>
+              </div>
+              <canvas id="incomeChart" aria-label="6 month income chart" role="img"></canvas>
+            </div>
+
+            <div class="p-4 rounded-xl bg-white shadow-card chart-wrap">
+              <div class="flex items-center justify-between mb-2">
+                <div class="text-sm font-semibold">Policy Distribution</div>
+                <div class="text-xs text-slate-400">Policies by month</div>
+              </div>
+              <canvas id="policyChart" aria-label="policies chart" role="img"></canvas>
+            </div>
+          </div>
+
+        </article>
+
+        <!-- Controls / Inputs Column -->
+        <aside class="glass rounded-2xl p-6 shadow-card">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-lg bg-rnlic-blue/10 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2" stroke="#004085" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold">Input Performance</div>
+              <div class="text-xs text-slate-400">Enter Policy Worth (₹) & Policies sold per month</div>
+            </div>
+          </div>
+
+          <form id="inputForm" class="space-y-4" onsubmit="return false">
+            <div class="grid grid-cols-1 gap-3">
+              <!-- Six month grid compact -->
+              <div class="grid grid-cols-3 gap-2 text-xs text-slate-500">
+                <div class="font-semibold">Month</div>
+                <div class="font-semibold text-center">Policy Worth</div>
+                <div class="font-semibold text-center">Policies</div>
+              </div>
+
+              <template id="monthRowTpl">
+                <div class="grid grid-cols-3 gap-2 items-center">
+                  <div class="py-2 px-3 rounded-lg text-sm font-medium bg-rnlic-blue/5">M</div>
+                  <input type="number" inputmode="numeric" min="0" class="input-field w-full py-2 px-3 rounded-lg border border-slate-100" />
+                  <input type="number" inputmode="numeric" min="0" class="input-field w-full py-2 px-3 rounded-lg border border-slate-100" />
+                </div>
+              </template>
+
+              <div id="monthsContainer" class="space-y-2"></div>
+
+              <div class="pt-2">
+                <button id="calcBtn" class="w-full py-3 rounded-lg bg-rnlic-blue text-white font-semibold">Calculate</button>
+              </div>
+
+              <div class="text-xs text-slate-500">Tip: Use realistic policy worth values for accurate FYC/MPI projection.</div>
+            </div>
+          </form>
+
+          <div class="mt-4 border-t pt-4">
+            <div class="text-xs text-slate-500">Quick actions</div>
+            <div class="flex gap-2 mt-3">
+              <button id="resetBtn" class="flex-1 py-2 rounded-lg border border-slate-100">Reset</button>
+              <button id="demoBtn" class="flex-1 py-2 rounded-lg bg-rnlic-orange text-white">Load Demo</button>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Details / Breakdown -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 glass rounded-2xl p-6 shadow-card">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">Income Breakdown</h2>
+            <div class="text-xs text-slate-400">Toggle details to inspect month-by-month</div>
+          </div>
+
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="text-left text-xs text-slate-500 border-b">
+                  <th class="py-3">Month</th>
+                  <th class="py-3 text-right">Income</th>
+                  <th class="py-3 text-right">Policy Worth</th>
+                  <th class="py-3 text-right">Policies</th>
+                  <th class="py-3 text-right">ATS</th>
+                  <th class="py-3 text-right">Commission (FYC+MPI)</th>
+                  <th class="py-3 text-right">Bonus (MCB+QB)</th>
+                  <th class="py-3 text-right">Fixed</th>
+                </tr>
+              </thead>
+              <tbody id="breakdownBody" class="text-sm"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Insights & Recommendations -->
+        <aside class="glass rounded-2xl p-6 shadow-card">
+          <h3 class="text-base font-semibold">Insights</h3>
+          <div id="insightsList" class="mt-3 space-y-3 text-sm text-slate-600"></div>
+
+          <div class="mt-6">
+            <h4 class="text-sm font-semibold">What to improve</h4>
+            <ul id="improveList" class="mt-2 text-sm list-disc pl-5 text-slate-600"></ul>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-8 text-center text-xs text-slate-500">© 2025 Reliance Nippon Life Insurance Company Limited — Protecting dreams, securing futures.</footer>
+    </main>
+
+    <!-- Script: structure, charting, calculator logic -->
+    <script>
+      // Utility functions (adapted from your logic)
+      function getFycPct(wcp) {
+        if (!wcp) return 0;
+        if (wcp <= 50000) return 0.35;
+        if (wcp <= 100000) return 0.55;
+        if (wcp <= 200000) return 0.60;
+        if (wcp <= 500000) return 0.65;
+        if (wcp <= 1000000) return 0.75;
+        return 0.85;
+      }
+      function getMcBPercent(consistency) {
+        switch (consistency) {
+          case 1: return 0;
+          case 2: return 0.35;
+          case 3: return 0.40;
+          case 4: return 0.45;
+          case 5: return 0.50;
+          case 6: return 0.60;
+          case 7: return 0.75;
+          default: return 0;
+        }
+      }
+      function hasConsecutiveActiveMonths(arr) {
+        for (let i = 1; i < arr.length; i++) if (arr[i] > 0 && arr[i-1] > 0) return true;
+        return false;
+      }
+      function formatNum(n){ return Number(n||0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+      function sumArr(a){ return a.reduce((s,v)=>s+v,0); }
+
+      // Build month rows
+      const monthsContainer = document.getElementById('monthsContainer');
+      const monthTpl = document.getElementById('monthRowTpl');
+      const monthNames = ['M1','M2','M3','M4','M5','M6'];
+      for(let i=0;i<6;i++){
+        const frag = document.importNode(monthTpl.content, true);
+        frag.querySelector('.py-2').textContent = monthNames[i];
+        const inputs = frag.querySelectorAll('input');
+        inputs[0].setAttribute('id', 'wcp'+(i+1));
+        inputs[1].setAttribute('id', 'nop'+(i+1));
+        monthsContainer.appendChild(frag);
+      }
+
+      // DOM refs
+      const calcBtn = document.getElementById('calcBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const demoBtn = document.getElementById('demoBtn');
+      const breakdownBody = document.getElementById('breakdownBody');
+      const insightsList = document.getElementById('insightsList');
+      const improveList = document.getElementById('improveList');
+
+      // KPIs
+      const kpiTotal = document.getElementById('kpiTotal');
+      const kpiAvg = document.getElementById('kpiAvg');
+      const kpiPolicies = document.getElementById('kpiPolicies');
+      const kpiMax = document.getElementById('kpiMax');
+
+      // Today
+      document.getElementById('today').textContent = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+
+      // Charts
+      const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+      const policyCtx = document.getElementById('policyChart').getContext('2d');
+      let incomeChart = new Chart(incomeCtx, { type:'line', data:{ labels:monthNames, datasets:[{ label:'Income (₹)', data:[0,0,0,0,0,0], tension:0.35, borderWidth:3, pointRadius:4, borderColor: 'rgb(0,64,133)', backgroundColor:'rgba(14,165,233,0.08)' }]}, options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ ticks:{ callback: v => '₹' + Number(v).toLocaleString() } } } } });
+      let policyChart = new Chart(policyCtx, { type:'bar', data:{ labels:monthNames, datasets:[{ label:'Policies', data:[0,0,0,0,0,0], borderRadius:6, backgroundColor:'rgb(249,115,22)' }]}, options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ ticks:{ precision:0 } } } } });
+
+      // Main calculate function
+      function calculateAndRender(){
+        const wcp = [], nop = [];
+        for(let i=1;i<=6;i++){ wcp.push(Number(document.getElementById('wcp'+i).value) || 0); nop.push(Number(document.getElementById('nop'+i).value) || 0); }
+
+        // ATS
+        const ats = wcp.map((amt,i)=> nop[i]? amt/nop[i] : 0);
+        const cumulative = wcp.map((_,i)=> wcp.slice(0,i+1).reduce((a,b)=>a+b,0));
+        const fyc = wcp.map(v=> v*0.16);
+        const fycPct = wcp.map(getFycPct);
+        const mpi = fyc.map((val,i)=> val * fycPct[i]);
+
+        let cons=0; const consistency=[];
+        for(let i=0;i<6;i++){ if(wcp[i]>0) cons++; else cons=0; consistency[i]=cons; }
+
+        const mcbPct = consistency.map(getMcBPercent);
+        const mcbVal = mpi.map((val,i)=> consistency[i]>=2 ? val * mcbPct[i] : 0);
+        const qb = Array(6).fill(0);
+        if(hasConsecutiveActiveMonths(wcp.slice(0,3))) qb[2] = mcbVal.slice(0,3).reduce((a,b)=>a+b,0) * 0.5;
+        if(hasConsecutiveActiveMonths(wcp.slice(3,6))) qb[5] = mcbVal.slice(3,6).reduce((a,b)=>a+b,0) * 0.5;
+
+        function getFixed(totalWcp, maxCons, totalNop){ if(totalWcp>=700000 && maxCons>=2 && totalNop>=12) return 10000; if(totalWcp>=350000 && maxCons>=2 && totalNop>=6) return 5000; return 2000; }
+        const fixedQ1 = getFixed(wcp.slice(0,3).reduce((a,b)=>a+b,0), Math.max(...consistency.slice(0,3)), nop.slice(0,3).reduce((a,b)=>a+b,0));
+        const fixedQ2 = getFixed(wcp.slice(3,6).reduce((a,b)=>a+b,0), Math.max(...consistency.slice(3,6)), nop.slice(3,6).reduce((a,b)=>a+b,0));
+        const fixed = []; for(let i=0;i<3;i++) fixed[i]=fixedQ1; for(let i=3;i<6;i++) fixed[i]=fixedQ2;
+
+        const totalIncome = fyc.map((f,i)=> f + mpi[i] + mcbVal[i] + qb[i] + fixed[i]);
+
+        // Update KPIs
+        const total6 = sumArr(totalIncome); const avg = total6/6; const policiesTotal = sumArr(nop); const maxInc = Math.max(...totalIncome);
+        kpiTotal.textContent = '₹' + formatNum(total6);
+        kpiAvg.textContent = '₹' + formatNum(avg);
+        kpiPolicies.textContent = policiesTotal;
+        kpiMax.textContent = '₹' + formatNum(maxInc);
+
+        // Update charts
+        incomeChart.data.datasets[0].data = totalIncome.map(n=>Math.round(n)); incomeChart.update();
+        policyChart.data.datasets[0].data = nop; policyChart.update();
+
+        // Breakdown table
+        breakdownBody.innerHTML = '';
+        const maxIdx = totalIncome.indexOf(maxInc);
+        for(let i=0;i<6;i++){
+          const tr = document.createElement('tr');
+          tr.className = 'border-b';
+          tr.innerHTML = `<td class="py-3">${i+1}</td>
+            <td class="py-3 text-right font-semibold ${i===maxIdx? 'text-rnlic-orange' : ''}">₹${formatNum(totalIncome[i])}</td>
+            <td class="py-3 text-right">₹${formatNum(wcp[i])}</td>
+            <td class="py-3 text-right">${nop[i]}</td>
+            <td class="py-3 text-right">₹${formatNum(ats[i])}</td>
+            <td class="py-3 text-right">₹${formatNum(fyc[i] + mpi[i])}</td>
+            <td class="py-3 text-right">₹${formatNum(mcbVal[i] + qb[i])}</td>
+            <td class="py-3 text-right">₹${formatNum(fixed[i])}</td>`;
+          breakdownBody.appendChild(tr);
+        }
+
+        // Insights
+        const insights = [];
+        if(policiesTotal < 6) insights.push('Low policy count — aim for 1+ policy per month as baseline.');
+        if(avg < 15000) insights.push('Average monthly income is low; consider focusing on higher WCP leads.');
+        if(maxInc === 0) insights.push('No active months detected — enter policy worths to compute estimates.');
+        insightsList.innerHTML = insights.map(i => `<div class="text-sm">• ${i}</div>`).join('') || '<div class="text-sm text-slate-400">No immediate insights. Good consistency!</div>';
+
+        improveList.innerHTML = '';
+        const items = [];
+        if(policiesTotal < 12) items.push('Increase outreach to convert more leads into policies.');
+        if(wcp.some(v=> v>500000)) items.push('You have high-value policies — maintain follow-up for cross-sell.');
+        if(items.length) improveList.innerHTML = items.map(it=> `<li>${it}</li>`).join('');
+      }
+
+      // Button handlers
+      calcBtn.addEventListener('click', calculateAndRender);
+      resetBtn.addEventListener('click', ()=>{ for(let i=1;i<=6;i++){ document.getElementById('wcp'+i).value = ''; document.getElementById('nop'+i).value = ''; } calculateAndRender(); });
+      demoBtn.addEventListener('click', ()=>{ const sampleWcp=[120000,180000,220000,200000,150000,300000]; const sampleNop=[2,3,3,2,2,4]; for(let i=1;i<=6;i++){ document.getElementById('wcp'+i).value = sampleWcp[i-1]; document.getElementById('nop'+i).value = sampleNop[i-1]; } calculateAndRender(); });
+
+      // Export CSV
+      document.getElementById('exportBtn').addEventListener('click', ()=>{
+        const rows = [['Month','Income','Policy Worth','Policies']];
+        const trs = breakdownBody.querySelectorAll('tr');
+        trs.forEach(tr=>{
+          const cols = Array.from(tr.children).slice(0,4).map(td=> td.textContent.trim());
+          rows.push(cols);
+        });
+        if(rows.length===1) return alert('No data to export');
+        const csv = rows.map(r=> r.map(c=> '"'+c.replace(/"/g,'""')+'"').join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'rnlic_agent_report.csv'; a.click(); URL.revokeObjectURL(url);
+      });
+
+      // Initialize with zeros
+      calculateAndRender();
+    </script>
+  </body>
+</html>
