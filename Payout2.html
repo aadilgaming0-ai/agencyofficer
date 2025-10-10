@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agency Officer Income Calculator - Reliance Nippon Life</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+  :root {
+    --reliance-orange: #f97316;
+    --reliance-blue: #004085;
+    --white: #ffffff;
+    --light-blue: #dae8fc;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, var(--light-blue), var(--white));
+    margin: 0;
+    padding: 3rem 1rem;
+    color: var(--reliance-blue);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgb(0 64 133 / 0.15);
+    max-width: 900px;
+    width: 100%;
+    padding: 32px 36px;
+  }
+
+  h1 {
+    color: var(--reliance-orange);
+    font-weight: 700;
+    font-size: 1.75rem;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 1px;
+  }
+
+  h2 {
+    color: var(--reliance-blue);
+    font-weight: 500;
+    font-size: 1.25rem;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.75rem;
+  }
+
+  form table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+  }
+
+  th, td {
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  th {
+    background: var(--reliance-orange);
+    color: var(--white);
+    font-weight: 700;
+    border-radius: 8px 8px 0 0;
+    font-size: 0.9rem;
+    cursor: default;
+  }
+
+  td {
+    background: #fdf7f1;
+    border-radius: 0 0 10px 10px;
+    font-size: 0.9rem;
+  }
+
+  input[type=number] {
+    background: var(--white);
+    border: 2px solid var(--reliance-orange);
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 9px 14px;
+    width: 90px;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+
+  input[type=number]::placeholder {
+    color: #bbb;
+  }
+
+  input[type=number]:focus {
+    outline: none;
+    border-color: var(--reliance-blue);
+    background: #eff5ff;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    margin: 2rem 0 1rem 0;
+    padding: 16px;
+    background: var(--reliance-blue);
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgb(0 64 133 / 0.5);
+    transition: background 0.3s, transform 0.15s ease-in-out;
+  }
+
+  button:hover {
+    background: #003366;
+    transform: scale(1.05);
+  }
+
+  #result {
+    overflow-x: auto;
+    margin-top: 28px;
+  }
+
+  #result table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  #result th, #result td {
+    padding: 12px 10px;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  #result th {
+    background: var(--reliance-orange);
+    color: var(--white);
+    position: sticky;
+    top: 0;
+    box-shadow: inset 0 -3px 6px rgb(0 64 133 / 0.3);
+  }
+
+  #result tbody tr:nth-child(even) {
+    background: #fff6eb;
+  }
+
+  #result tbody tr:hover {
+    background: #ffe7c6;
+  }
+
+  #result tr:last-child td {
+    font-weight: 700;
+    background: #f2bd6e;
+    color: var(--reliance-blue);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 24px 20px;
+    }
+    input[type=number] {
+      width: 65px;
+      font-size: 0.9rem;
+      padding: 6px 8px;
+    }
+    button {
+      font-size: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Agency Officer Income Calculator">
+    <h1>Reliance Nippon Life</h1>
+    <h2>Agency Officer Income Calculator</h2>
+    <form id="incomeForm" aria-describedby="inputInstructions">
+      <p id="inputInstructions" style="text-align:center; font-size: 0.95rem; margin-bottom: 1.25rem; color: #666;">
+        Enter the <strong>Worth of Policies (WCP)</strong> and <strong>Number of Policies Sold (NOP)</strong> for each month
+      </p>
+      <table role="table" aria-label="Input monthly WCP and NOP">
+        <thead>
+          <tr>
+            <th scope="col">Month</th>
+            <th scope="col" title="Month 1">1</th>
+            <th scope="col" title="Month 2">2</th>
+            <th scope="col" title="Month 3">3</th>
+            <th scope="col" title="Month 4">4</th>
+            <th scope="col" title="Month 5">5</th>
+            <th scope="col" title="Month 6">6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><abbr title="Worth of Policies">WCP</abbr><br><small>(₹)</small></td>
+            <td><input type="number" id="wcp1" min="0" step="0.01" placeholder="0" aria-label="WCP Month 1" /></td>
+            <td><input type="number" id="wcp2" min="0" step="0.01" placeholder="0" aria-label="WCP Month 2" /></td>
+            <td><input type="number" id="wcp3" min="0" step="0.01" placeholder="0" aria-label="WCP Month 3" /></td>
+            <td><input type="number" id="wcp4" min="0" step="0.01" placeholder="0" aria-label="WCP Month 4" /></td>
+            <td><input type="number" id="wcp5" min="0" step="0.01" placeholder="0" aria-label="WCP Month 5" /></td>
+            <td><input type="number" id="wcp6" min="0" step="0.01" placeholder="0" aria-label="WCP Month 6" /></td>
+          </tr>
+          <tr>
+            <td><abbr title="Number of Policies Sold">NOP</abbr><br><small>(count)</small></td>
+            <td><input type="number" id="nop1" min="0" step="1" placeholder="0" aria-label="NOP Month 1" /></td>
+            <td><input type="number" id="nop2" min="0" step="1" placeholder="0" aria-label="NOP Month 2" /></td>
+            <td><input type="number" id="nop3" min="0" step="1" placeholder="0" aria-label="NOP Month 3" /></td>
+            <td><input type="number" id="nop4" min="0" step="1" placeholder="0" aria-label="NOP Month 4" /></td>
+            <td><input type="number" id="nop5" min="0" step="1" placeholder="0" aria-label="NOP Month 5" /></td>
+            <td><input type="number" id="nop6" min="0" step="1" placeholder="0" aria-label="NOP Month 6" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" onclick="calculateIncome()">Calculate Total Income</button>
+    </form>
+
+    <div id="result" tabindex="0" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+<script>
+function getFycPct(wcp) {
+  if (wcp === 0) return 0;
+  if (wcp > 0 && wcp <= 50000) return 0.35;
+  if (wcp > 50000 && wcp <= 100000) return 0.55;
+  if (wcp > 100000 && wcp <= 200000) return 0.60;
+  if (wcp > 200000 && wcp <= 500000) return 0.65;
+  if (wcp > 500000 && wcp <= 1000000) return 0.75;
+  if (wcp > 1000000) return 0.85;
+  return 0;
+}
+
+function getMcBPercent(consistency) {
+  switch(consistency) {
+    case 1: return 0;
+    case 2: return 0.35;
+    case 3: return 0.40;
+    case 4: return 0.45;
+    case 5: return 0.50;
+    case 6: return 0.60;
+    case 7: return 0.75;
+    default: return 0;
+  }
+}
+
+function getFixedIncome(totalWcp, consistency, nop) {
+  if (totalWcp >= 700000 && consistency >= 2 && nop >= 12) return 10000;
+  if (totalWcp >= 350000 && consistency >= 2 && nop >= 6) return 5000;
+  return 2000;
+}
+
+function calculateIncome() {
+  const months = 6;
+  let wcp = [], nop = [], ats = [], cumulativeWcp = [], fyc = [], fycPct = [],
+        mpi = [], consistency = [], mcbPct = [], mcbVal = [], qb = [], fixedIncome = [],
+        totalIncome = [];
+  
+  for (let i=0; i<months; i++) {
+    wcp[i] = parseFloat(document.getElementById("wcp"+(i+1)).value) || 0;
+    nop[i] = parseInt(document.getElementById("nop"+(i+1)).value) || 0;
+  }
+  
+  for(let i=0; i<months; i++) {
+    ats[i] = nop[i] === 0 ? 0 : wcp[i]/nop[i];
+  }
+
+  for(let i=0; i<months; i++) {
+    cumulativeWcp[i] = wcp.slice(0, i+1).reduce((a,b) => a+b, 0);
+  }
+
+  for(let i=0; i<months; i++) {
+    fyc[i] = wcp[i] * 0.16;
+  }
+
+  for(let i=0; i<months; i++) {
+    fycPct[i] = getFycPct(wcp[i]);
+  }
+
+  for(let i=0; i<months; i++) {
+    mpi[i] = fyc[i] * fycPct[i];
+  }
+
+  let consCount = 0;
+  for(let i=0; i<months; i++) {
+    if(wcp[i] > 0) {
+      consCount++;
+    } else {
+      consCount = 0;
+    }
+    consistency[i] = consCount;
+  }
+
+  for(let i=0; i<months; i++) {
+    if(consistency[i] >= 2) {
+      mcbPct[i] = getMcBPercent(consistency[i]);
+      mcbVal[i] = mpi[i] * mcbPct[i];
+    } else {
+      mcbPct[i] = 0;
+      mcbVal[i] = 0;
+    }
+  }
+
+  for(let i=0; i<months; i++) qb[i] = 0;
+
+  function hasConsecutiveActiveMonths(arr) {
+    for(let i=1; i<arr.length; i++) {
+      if(arr[i] > 0 && arr[i-1] > 0) return true;
+    }
+    return false;
+  }
+
+  if(hasConsecutiveActiveMonths(wcp.slice(0,3))) {
+    qb[2] = mcbVal.slice(0,3).reduce((a,b) => a+b, 0) * 0.5;
+  }
+
+  if(hasConsecutiveActiveMonths(wcp.slice(3,6))) {
+    qb[5] = mcbVal.slice(3,6).reduce((a,b) => a+b, 0) * 0.5;
+  }
+
+  function calcFixedIncomeForQuarter(wcpArr, consArr, nopArr) {
+    let totalWcpQ = wcpArr.reduce((a,b)=>a+b,0);
+    let maxConsistency = Math.max(...consArr);
+    let totalNopQ = nopArr.reduce((a,b)=>a+b,0);
+    return getFixedIncome(totalWcpQ, maxConsistency, totalNopQ);
+  }
+  
+  let fixedQ1 = calcFixedIncomeForQuarter(wcp.slice(0,3), consistency.slice(0,3), nop.slice(0,3));
+  let fixedQ2 = calcFixedIncomeForQuarter(wcp.slice(3,6), consistency.slice(3,6), nop.slice(3,6));
+
+  for (let i=0; i<3; i++) fixedIncome[i] = fixedQ1;
+  for (let i=3; i<6; i++) fixedIncome[i] = fixedQ2;
+
+  for(let i=0; i<months; i++) {
+    totalIncome[i] = fyc[i] + mpi[i] + mcbVal[i] + qb[i] + fixedIncome[i];
+  }
+
+  let output = '<h3>Income Calculation Results (₹)</h3><table role="table" aria-label="Income calculation results"><thead><tr><th scope="col">Row \\ Month</th>';
+  const headers = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+  ];
+  headers.forEach(h => output += `<th scope="col" title="Month ${h}">${h}</th>`);
+  output += '</tr></thead><tbody>';
+
+  function formatNum(n) { return n.toFixed(2); }
+
+  // Headers with full forms per row
+  const rows = [
+    {label: 'ATS', desc: 'Average Ticket Size (WCP / NOP)', data: ats},
+    {label: 'WCP', desc: 'Worth of Policies (Input)', data: wcp},
+    {label: 'NOP', desc: 'Number of Policies Sold (Input)', data: nop},
+    {label: 'Cumulative WCP', desc: 'Month on Month Cumulative Worth of Policies', data: cumulativeWcp},
+    {label: 'FYC', desc: 'First Year Commission (16% of WCP)', data: fyc},
+    {label: '% FYC', desc: 'Incentive % on FYC based on WCP', data: fycPct.map(x => x*100)},
+    {label: 'MPI', desc: 'Monthly Production Incentive (FYC * %FYC)', data: mpi},
+    {label: 'Consistency', desc: 'Consecutive Active Months Count', data: consistency},
+    {label: 'MCB %', desc: 'MoM Consistency Benefit % based on Consistency', data: mcbPct.map(x => x*100)},
+    {label: 'MCB Value', desc: 'MPI * MCB %', data: mcbVal},
+    {label: 'QB', desc: 'Quarterly Benefit (Paid in Month 3 & 6)', data: qb},
+    {label: 'Fixed Income', desc: 'Fixed Income based on Designation Criteria', data: fixedIncome},
+    {label: 'Total Income', desc: 'Sum of FYC, MPI, MCB, QB and Fixed Income', data: totalIncome},
+  ];
+
+  rows.forEach(row => {
+    output += `<tr><td><abbr title="${row.desc}">${row.label}</abbr></td>`;
+    row.data.forEach(d => output += `<td>${isNaN(d) ? '0.00' : (typeof d === 'number' ? formatNum(d) : d)}</td>`);
+    output += '</tr>';
+  });
+
+  output += '</tbody></table>';
+  document.getElementById('result').innerHTML = output;
+}
+</script>
+</body>
+</html>
