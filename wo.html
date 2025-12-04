@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AO Incentive Calculator | Premium Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== ROOT & BASE ===== */
+        :root {
+            --maroon-deep: #700000;
+            --maroon-primary: #800000;
+            --maroon-light: rgba(128, 0, 0, 0.1);
+            --maroon-glow: rgba(128, 0, 0, 0.15);
+            --white-pure: #FFFFFF;
+            --white-off: #F9F9F9;
+            --gray-ultralight: #F5F5F5;
+            --gray-border: #EAEAEA;
+            --text-dark: #1A1A1A;
+            --text-medium: #666666;
+            --text-light: #888888;
+            --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.03);
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --radius-large: 20px;
+            --radius-medium: 12px;
+            --radius-small: 8px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+            background: var(--white-off);
+            color: var(--text-dark);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* ===== APP CONTAINER ===== */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--white-pure);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            background: linear-gradient(135deg, var(--maroon-deep), var(--maroon-primary));
+            padding: 1.5rem 1.5rem 1.25rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--white-pure);
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .app-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* ===== INFO BUTTON ===== */
+        .info-button {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white-pure);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+            border: none;
+            outline: none;
+        }
+
+        .info-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* ===== MODAL OVERLAY - SIMPLIFIED ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white-pure);
+            border-radius: var(--radius-large);
+            width: 100%;
+            max-width: 420px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--maroon-deep), var(--maroon-primary));
+            padding: 1.5rem;
+            border-radius: var(--radius-large) var(--radius-large) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--white-pure);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .close-button {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white-pure);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: none;
+            outline: none;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .assumptions-list {
+            list-style: none;
+        }
+
+        .assumption-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .assumption-item:last-child {
+            border-bottom: none;
+        }
+
+        .assumption-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--maroon-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--maroon-primary);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .assumption-text {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+        }
+
+        .highlight {
+            color: var(--maroon-primary);
+            font-weight: 500;
+        }
+
+        /* ===== CONTEST PERIOD SELECTOR ===== */
+        .contest-period-selector {
+            padding: 1.25rem 1.5rem 0;
+        }
+
+        .contest-card {
+            background: var(--white-pure);
+            border-radius: var(--radius-large);
+            padding: 1.25rem;
+            border: 2px solid var(--maroon-primary);
+            box-shadow: 0 4px 12px rgba(128, 0, 0, 0.08);
+        }
+
+        .contest-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .contest-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--maroon-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white-pure);
+            font-size: 1rem;
+        }
+
+        .contest-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--maroon-primary);
+        }
+
+        .period-selector {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .period-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .period-input {
+            display: none;
+        }
+
+        .period-label {
+            display: block;
+            padding: 0.875rem 0.5rem;
+            border: 2px solid var(--gray-border);
+            border-radius: var(--radius-medium);
+            background: var(--white-pure);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        .period-input:checked + .period-label {
+            border-color: var(--maroon-primary);
+            background: var(--maroon-light);
+            color: var(--maroon-primary);
+            box-shadow: 0 0 0 3px var(--maroon-glow);
+        }
+
+        /* ===== MAIN CONTENT AREA ===== */
+        .main-content {
+            padding-bottom: 90px;
+            overflow-y: auto;
+        }
+
+        /* ===== INPUTS SECTION ===== */
+        .inputs-section {
+            padding: 1.5rem;
+            padding-bottom: 1rem;
+        }
+
+        /* ===== SECTION CARDS ===== */
+        .section-card {
+            background: var(--white-pure);
+            border-radius: var(--radius-large);
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--gray-border);
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--maroon-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white-pure);
+            font-size: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--maroon-primary);
+            letter-spacing: -0.01em;
+        }
+
+        /* ===== SECTION DIVIDERS ===== */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.75rem 0 1.25rem;
+            padding: 0.75rem 0;
+        }
+
+        .divider-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--maroon-light);
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--maroon-primary);
+            font-size: 0.85rem;
+        }
+
+        .divider-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--maroon-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        /* ===== INPUT GROUPS ===== */
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .input-label i {
+            color: var(--maroon-primary);
+            width: 16px;
+            text-align: center;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-medium);
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-dark);
+            background: var(--white-pure);
+            transition: var(--transition-smooth);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--maroon-primary);
+            box-shadow: 0 0 0 3px var(--maroon-glow);
+        }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.375rem;
+            line-height: 1.4;
+        }
+
+        /* ===== LIVE STATS SECTION ===== */
+        .live-stats-section {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .live-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .stat-card {
+            background: var(--white-pure);
+            border-radius: var(--radius-medium);
+            padding: 1.25rem 1rem;
+            border: 1px solid var(--maroon-primary);
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(128, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--maroon-primary);
+            letter-spacing: -0.01em;
+        }
+
+        /* ===== RESULTS SECTION ===== */
+        .results-section {
+            padding: 1.5rem;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* ===== EARNINGS HIGHLIGHT ===== */
+        .earnings-highlight {
+            background: linear-gradient(135deg, var(--maroon-deep), var(--maroon-primary));
+            border-radius: var(--radius-large);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--white-pure);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(128, 0, 0, 0.15);
+        }
+
+        .earnings-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .earnings-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .earnings-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* ===== TRIP BADGE ===== */
+        .trip-badge-container {
+            margin-top: 0.5rem;
+        }
+
+        .trip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            background: var(--white-pure);
+            color: var(--maroon-primary);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .trip-badge i {
+            font-size: 1rem;
+        }
+
+        /* ===== PERFORMANCE TIER ===== */
+        .performance-tier {
+            background: var(--white-pure);
+            border-radius: var(--radius-medium);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--maroon-primary);
+            text-align: center;
+        }
+
+        .tier-label {
+            font-size: 0.85rem;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .tier-value {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--maroon-primary);
+        }
+
+        /* ===== POLICY SUMMARY ===== */
+        .policy-summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .policy-card {
+            background: var(--white-pure);
+            border-radius: var(--radius-medium);
+            padding: 1.25rem 1rem;
+            border: 1px solid var(--gray-border);
+            text-align: center;
+        }
+
+        .policy-label {
+            font-size: 0.8rem;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+        }
+
+        .policy-value {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--maroon-primary);
+        }
+
+        /* ===== BREAKDOWN SECTION ===== */
+        .breakdown-section {
+            background: var(--white-pure);
+            border-radius: var(--radius-large);
+            padding: 1.5rem;
+            border: 1px solid var(--gray-border);
+        }
+
+        .breakdown-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--maroon-primary);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.875rem 0;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .breakdown-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--maroon-primary);
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+
+        .breakdown-subtext {
+            font-size: 0.75rem;
+            color: var(--maroon-primary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* ===== ACTION BAR ===== */
+        .action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white-pure);
+            padding: 1rem;
+            border-top: 1px solid var(--gray-border);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 100;
+            max-width: 480px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 0.875rem;
+            border-radius: var(--radius-medium);
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .button-primary {
+            background: var(--maroon-primary);
+            color: var(--white-pure);
+        }
+
+        .button-primary:hover {
+            background: var(--maroon-deep);
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background: var(--white-pure);
+            color: var(--maroon-primary);
+            border: 1px solid var(--maroon-primary);
+        }
+
+        .button-secondary:hover {
+            background: var(--maroon-light);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--maroon-primary);
+            color: var(--white-pure);
+            padding: 0.875rem 1.25rem;
+            border-radius: var(--radius-medium);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            z-index: 10000;
+            animation: slideDown 0.3s ease-out;
+            max-width: 90%;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideDown {
+            from { top: -100px; opacity: 0; }
+            to { top: 20px; opacity: 1; }
+        }
+
+        @keyframes slideUpOut {
+            from { top: 20px; opacity: 1; }
+            to { top: -100px; opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== MOBILE OPTIMIZATIONS ===== */
+        @media (max-width: 480px) {
+            .inputs-section,
+            .live-stats-section,
+            .results-section {
+                padding: 1.25rem;
+            }
+            
+            .section-card {
+                padding: 1.25rem;
+            }
+            
+            .app-header {
+                padding: 1.25rem 1.25rem 1rem;
+            }
+            
+            .app-title {
+                font-size: 1.35rem;
+            }
+            
+            .live-stats,
+            .policy-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .earnings-value {
+                font-size: 2rem;
+            }
+            
+            .action-bar {
+                padding: 0.875rem;
+            }
+            
+            .modal-content {
+                margin: 0.5rem;
+            }
+            
+            .period-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Ready to calculate</span>
+    </div>
+
+    <!-- Assumptions Modal -->
+    <div id="assumptionsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-info-circle"></i>
+                    Assumptions Considered
+                </h2>
+                <button class="close-button" id="closeModalBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="assumptions-list">
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">WRP and WCP</span> are auto-calculated based on policy count × ATS × applicable product credit.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="assumption-text">
+                            Calculator uses <span class="highlight">maximum product credit</span> as per the defined slabs for all product categories.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">ATS (annual premium in lakhs)</span> determines the product slab for credit% and FYC%.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">Self Commission</span> = Σ(WRP × FYC%) from all self-sourced policies.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">L1 Commission</span> is included only for MPI calculation, not added into AO Incentive directly.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">MPI (%)</span> is applied on total commission (Self + L1) based on the WCP incentive table.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">L1 Activation Bonus</span> is based solely on number of Active L1, not their premium size.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div class="assumption-text">
+                            A fixed <span class="highlight">0.02L payout</span> is added to AO Incentive for every AO.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">AO Incentive</span> = Self Commission + MPI + L1 Activation Bonus + 0.02L.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">Activation Kicker and Cash Rewards</span> depend only on WCP slabs.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">Trip eligibility</span> has no monetary value, only an informational label.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="assumption-text">
+                            <span class="highlight">% of WRP</span> = (AO Incentive + AO Reward) ÷ WRP × 100.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <div class="assumption-text">
+                            All amounts are assumed to be in <span class="highlight">Lakhs (L)</span>.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="assumption-text">
+                            Premium values are assumed to be <span class="highlight">annualised and paid (FYP)</span>.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="assumption-text">
+                            All ATS inputs are assumed to fall within <span class="highlight">valid product slabs</span>.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="assumption-text">
+                            Each L1 is assumed to produce <span class="highlight">uniform NOP and ATS</span> as entered.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="assumption-text">
+                            No deductions like <span class="highlight">GST, TDS, or clawbacks</span> are applied.
+                        </div>
+                    </li>
+                    <li class="assumption-item">
+                        <div class="assumption-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="assumption-text">
+                            Product credit does not exceed the <span class="highlight">maximum credit %</span> defined in the slabs.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header with Info Button -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">AO Incentive Calculator</h1>
+                <p class="app-subtitle">Premium performance dashboard</p>
+            </div>
+            <button class="info-button" id="infoButton" title="View Assumptions">
+                <i class="fas fa-info"></i>
+            </button>
+        </header>
+
+        <!-- Contest Period Selector -->
+        <section class="contest-period-selector">
+            <div class="contest-card">
+                <div class="contest-header">
+                    <div class="contest-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h2 class="contest-title">Contest Period</h2>
+                </div>
+                <p class="input-hint">Select contest duration for accurate calculation:</p>
+                <div class="period-selector">
+                    <div class="period-option">
+                        <input type="radio" id="period-15th" name="contestPeriod" value="15th" class="period-input" checked>
+                        <label for="period-15th" class="period-label">
+                            Till 15th Dec
+                        </label>
+                    </div>
+                    <div class="period-option">
+                        <input type="radio" id="period-31st" name="contestPeriod" value="31st" class="period-input">
+                        <label for="period-31st" class="period-label">
+                            Till 31st Dec
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Inputs Section -->
+            <section class="inputs-section">
+                <div class="section-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <h2 class="card-title">Performance Inputs</h2>
+                    </div>
+
+                    <!-- Self-Sourced Performance -->
+                    <div class="section-divider">
+                        <div class="divider-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 class="divider-title">Self-Sourced</h3>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-box"></i>
+                            Primary Product
+                        </label>
+                        <select class="input-field" id="p1cat">
+                            <option value="ACE">ACE</option>
+                            <option value="Milestone">Milestone</option>
+                            <option value="SAFE">SAFE</option>
+                            <option value="GAIN" selected>GAIN</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-layer-group"></i>
+                            Number of Policies
+                        </label>
+                        <input type="number" class="input-field" id="p1nop" value="2" min="0">
+                        <p class="input-hint">Total policies sold for primary product</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-chart-bar"></i>
+                            Average Ticket Size (Lakhs)
+                        </label>
+                        <input type="number" step="0.01" class="input-field" id="p1ats" value="1.5" min="0">
+                        <p class="input-hint">Average policy value in lakhs</p>
+                    </div>
+
+                    <!-- Secondary Product -->
+                    <div class="section-divider">
+                        <div class="divider-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <h3 class="divider-title">Secondary Product</h3>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-box"></i>
+                            Product Type
+                        </label>
+                        <select class="input-field" id="p2cat">
+                            <option value="">None</option>
+                            <option value="ACE">ACE</option>
+                            <option value="Milestone">Milestone</option>
+                            <option value="SAFE">SAFE</option>
+                            <option value="GAIN">GAIN</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-layer-group"></i>
+                            Number of Policies
+                        </label>
+                        <input type="number" class="input-field" id="p2nop" value="1" min="0">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-chart-bar"></i>
+                            Average Ticket Size (Lakhs)
+                        </label>
+                        <input type="number" step="0.01" class="input-field" id="p2ats" value="2" min="0">
+                    </div>
+
+                    <!-- Team Performance -->
+                    <div class="section-divider">
+                        <div class="divider-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="divider-title">Team Performance (L1)</h3>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-user-check"></i>
+                            Active L1 Associates
+                        </label>
+                        <input type="number" class="input-field" id="l1active" value="1" min="0">
+                        <p class="input-hint">Number of active L1 associates</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-bullseye"></i>
+                            L1 Product Focus
+                        </label>
+                        <select class="input-field" id="l1cat">
+                            <option value="">None</option>
+                            <option value="ACE">ACE</option>
+                            <option value="Milestone">Milestone</option>
+                            <option value="SAFE">SAFE</option>
+                            <option value="GAIN" selected>GAIN</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-chart-pie"></i>
+                            Policies per L1
+                        </label>
+                        <input type="number" class="input-field" id="l1nop" value="1" min="0">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-chart-line"></i>
+                            Average Ticket Size (Lakhs)
+                        </label>
+                        <input type="number" step="0.01" class="input-field" id="l1ats" value="1.1" min="0">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Stats Section -->
+            <section class="live-stats-section">
+                <div class="live-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <i class="fas fa-chart-line"></i>
+                            Estimated Revenue
+                        </div>
+                        <div class="stat-value" id="liveWRP">0.00 L</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <i class="fas fa-bullseye"></i>
+                            Weighted Performance
+                        </div>
+                        <div class="stat-value" id="liveWCP">0.00 L</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection">
+                <!-- Contest Period Badge -->
+                <div class="performance-tier">
+                    <div class="tier-label">
+                        <i class="fas fa-calendar-check"></i>
+                        Contest Period
+                    </div>
+                    <div class="tier-value" id="selectedPeriod">Till 15th Dec</div>
+                </div>
+
+                <!-- Earnings Highlight -->
+                <div class="earnings-highlight">
+                    <div class="earnings-label">
+                        <i class="fas fa-crown"></i>
+                        Total Earnings
+                    </div>
+                    <div class="earnings-value" id="totalEarnings">0.00 L</div>
+                    
+                    <!-- Trip Badge -->
+                    <div class="trip-badge-container" id="tripBadgeContainer" style="display: none;">
+                        <div class="trip-badge">
+                            <i class="fas fa-plane"></i>
+                            <span id="tripText"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Tier -->
+                <div class="performance-tier">
+                    <div class="tier-label">
+                        <i class="fas fa-medal"></i>
+                        Performance Tier
+                    </div>
+                    <div class="tier-value" id="performanceTier">Basic</div>
+                </div>
+
+                <!-- Policy Summary -->
+                <div class="policy-summary">
+                    <div class="policy-card">
+                        <div class="policy-label">
+                            <i class="fas fa-user"></i>
+                            Self Policies
+                        </div>
+                        <div class="policy-value" id="selfPolicies">0</div>
+                    </div>
+                    <div class="policy-card">
+                        <div class="policy-label">
+                            <i class="fas fa-users"></i>
+                            Team Policies
+                        </div>
+                        <div class="policy-value" id="teamPolicies">0</div>
+                    </div>
+                </div>
+
+                <!-- Breakdown Section -->
+                <div class="breakdown-section">
+                    <div class="breakdown-title">
+                        <i class="fas fa-list-alt"></i>
+                        Earnings Breakdown
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-label">
+                            <i class="fas fa-money-bill-wave"></i>
+                            AO Incentive
+                        </div>
+                        <div class="breakdown-value" id="breakdownIncentive">0.00 L</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-label">
+                            <i class="fas fa-gift"></i>
+                            Additional Rewards
+                        </div>
+                        <div class="breakdown-value" id="breakdownReward">
+                            <span id="rewardAmount">0.00 L</span>
+                            <span class="breakdown-subtext" id="tripSubtext" style="display: none;">
+                                <i class="fas fa-plus"></i>
+                                <span id="tripSubtextLabel"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sticky Action Bar -->
+        <div class="action-bar">
+            <button class="action-button button-secondary" id="fillExample">
+                <i class="fas fa-magic"></i>
+                Load Example
+            </button>
+            <button class="action-button button-primary" id="calc">
+                <i class="fas fa-calculator"></i>
+                Calculate
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Define productData with correct percentages according to the table
+        const productData = {
+            "ACE": [
+                {min:1.5, max:2.5, credit:1.00},  // 100%
+                {min:2.5, max:4.5, credit:1.10}   // 110%
+            ],
+            "Milestone": [
+                {min:2, max:4, credit:1.10},      // 110%
+                {min:4, max:10, credit:1.20}      // 120%
+            ],
+            "SAFE": [
+                {min:0.35, max:0.6, credit:1.10}, // 110%
+                {min:0.6, max:10, credit:1.20}    // 120%
+            ],
+            "GAIN": [
+                {min:1.1, max:2, credit:1.05},    // 105%
+                {min:2, max:10, credit:1.15}      // 115%
+            ]
+        };
+
+        // FYC percentages for commission calculation
+        const fycPercentages = {
+            "ACE": 0.165,
+            "Milestone": 0.21,
+            "SAFE": 0.21,
+            "GAIN": 0.165
+        };
+
+        // Different reward tables for different contest periods
+        const contestPeriodData = {
+            "15th": {
+                // Activation Kicker for Till 15th Dec
+                getAK: function(wcp) {
+                    if (wcp < 2) return 0;  // No AK below 2
+                    if (wcp < 3) return 0.05;  // 5% for 2-3
+                    if (wcp < 6) return 0.125; // 12.5% for 3-6
+                    if (wcp < 7) return 0.125; // 12.5% for 6-7
+                    if (wcp < 10) return 0.125; // 12.5% for 7-10
+                    if (wcp < 13) return 0.25;  // 25% for 10-13
+                    if (wcp < 16) return 0.5;   // 50% for 13-16
+                    return 0.75; // 75% for 16+
+                },
+                // Cash Reward for Till 15th Dec
+                getCash: function(wcp) {
+                    if (wcp < 2) return 0;  // No cash below 2
+                    if (wcp < 3) return 0.10;  // 0.10L for 2-3
+                    if (wcp < 6) return 0.25;  // 0.25L for 3-6
+                    if (wcp < 7) return 0.25;  // 0.25L for 6-7
+                    if (wcp < 10) return 0.25; // 0.25L for 7-10
+                    if (wcp < 13) return 0.50; // 0.50L for 10-13
+                    if (wcp < 16) return 1.00; // 1.00L for 13-16
+                    return 1.50; // 1.50L for 16+
+                },
+                // Trip eligibility for Till 15th Dec
+                getTripLabel: function(wcp) {
+                    if (wcp < 7) return "";  // No trip below 7
+                    if (wcp < 10) return "Dubai Co-pay @ 10K"; // Dubai Co-pay for 7-10
+                    return "Dubai"; // Dubai for 10+
+                }
+            },
+            "31st": {
+                // Activation Kicker for Till 31st Dec
+                getAK: function(wcp) {
+                    if (wcp < 3) return 0;  // No AK below 3
+                    if (wcp < 7.5) return 0.125; // 12.5% for 3-7.5
+                    if (wcp < 9) return 0.125;  // 12.5% for 7.5-9
+                    if (wcp < 12) return 0.125; // 12.5% for 9-12
+                    if (wcp < 16) return 0.25;  // 25% for 12-16
+                    if (wcp < 20) return 0.5;   // 50% for 16-20
+                    return 0.75; // 75% for 20+
+                },
+                // Cash Reward for Till 31st Dec
+                getCash: function(wcp) {
+                    if (wcp < 3) return 0;  // No cash below 3
+                    if (wcp < 7.5) return 0.25;  // 0.25L for 3-7.5
+                    if (wcp < 9) return 0.25;   // 0.25L for 7.5-9
+                    if (wcp < 12) return 0.25;  // 0.25L for 9-12
+                    if (wcp < 16) return 0.50;  // 0.50L for 12-16
+                    if (wcp < 20) return 1.00;  // 1.00L for 16-20
+                    return 1.50; // 1.50L for 20+
+                },
+                // Trip eligibility for Till 31st Dec
+                getTripLabel: function(wcp) {
+                    if (wcp < 7.5) return "";  // No trip below 7.5
+                    if (wcp < 9) return "Dubai Co-pay @ 10K"; // Dubai Co-pay for 7.5-9
+                    return "Dubai"; // Dubai for 9+
+                }
+            }
+        };
+
+        // ========== SIMPLE MODAL FIX ==========
+        // Get modal elements
+        const modal = document.getElementById('assumptionsModal');
+        const infoBtn = document.getElementById('infoButton');
+        const closeBtn = document.getElementById('closeModalBtn');
+
+        // Function to open modal
+        function openModal() {
+            console.log('Opening modal...');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Function to close modal
+        function closeModal() {
+            console.log('Closing modal...');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners - SIMPLE APPROACH
+        infoBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUpOut 0.3s ease-out';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                    toast.style.animation = 'slideDown 0.3s ease-out';
+                }, 300);
+            }, 2000);
+        }
+
+        // Get credit percentage based on product and ticket size
+        function getCreditPercentage(product, ticketSize) {
+            if (!productData[product]) return 1.0;
+            
+            for (let slab of productData[product]) {
+                if (ticketSize >= slab.min && ticketSize < slab.max) {
+                    return slab.credit;
+                }
+            }
+            
+            const lastSlab = productData[product][productData[product].length - 1];
+            return ticketSize >= lastSlab.max ? lastSlab.credit : 1.0;
+        }
+
+        // MPI Table (same for both periods)
+        function getMPIpercent(wcp){
+            if(wcp<0.5) return 0.35;
+            if(wcp<1) return 0.55;
+            if(wcp<2) return 0.60;
+            if(wcp<5) return 0.65;
+            if(wcp<10) return 0.75;
+            return 0.85;
+        }
+
+        // L1 Activation Bonus (same for both periods)
+        function getL1ActivationBonus(count){
+            const map={1:0.02,2:0.05,3:0.09,4:0.12,5:0.15,6:0.18,7:0.21};
+            return map[count]||0;
+        }
+
+        // Get Performance Tier
+        function getPerformanceTier(wcp) {
+            if (wcp >= 16) return "Premium Elite";
+            if (wcp >= 10) return "Premium";
+            if (wcp >= 7) return "Advanced";
+            if (wcp >= 3) return "Intermediate";
+            if (wcp >= 1) return "Standard";
+            return "Basic";
+        }
+
+        // Get selected contest period
+        function getSelectedContestPeriod() {
+            const selected = document.querySelector('input[name="contestPeriod"]:checked');
+            return selected ? selected.value : "15th";
+        }
+
+        // Update contest period display
+        function updateContestPeriodDisplay() {
+            const period = getSelectedContestPeriod();
+            const displayText = period === "15th" ? "Till 15th Dec" : "Till 31st Dec";
+            document.getElementById('selectedPeriod').textContent = displayText;
+            return displayText;
+        }
+
+        // Live Stats Update Function
+        function updateLiveStats() {
+            const p1cat = document.getElementById("p1cat").value;
+            const p1nop = parseFloat(document.getElementById("p1nop").value) || 0;
+            const p1ats = parseFloat(document.getElementById("p1ats").value) || 0;
+            const p2cat = document.getElementById("p2cat").value;
+            const p2nop = parseFloat(document.getElementById("p2nop").value) || 0;
+            const p2ats = parseFloat(document.getElementById("p2ats").value) || 0;
+            const l1active = parseInt(document.getElementById("l1active").value) || 0;
+            const l1cat = document.getElementById("l1cat").value;
+            const l1nop = parseFloat(document.getElementById("l1nop").value) || 0;
+            const l1ats = parseFloat(document.getElementById("l1ats").value) || 0;
+
+            let wrp = 0;
+            if(p1nop>0) wrp += p1nop * p1ats;
+            if(p2nop>0 && p2cat) wrp += p2nop * p2ats;
+            if(l1active>0 && l1nop>0 && l1cat) wrp += l1active * l1nop * l1ats;
+
+            let wcp = 0;
+            if(p1nop>0 && p1cat) {
+                const credit = getCreditPercentage(p1cat, p1ats);
+                wcp += p1nop * p1ats * credit;
+            }
+            if(p2nop>0 && p2cat) {
+                const credit = getCreditPercentage(p2cat, p2ats);
+                wcp += p2nop * p2ats * credit;
+            }
+            if(l1active>0 && l1nop>0 && l1cat) {
+                const credit = getCreditPercentage(l1cat, l1ats);
+                wcp += l1active * l1nop * l1ats * credit;
+            }
+
+            document.getElementById('liveWRP').textContent = `${wrp.toFixed(2)} L`;
+            document.getElementById('liveWCP').textContent = `${wcp.toFixed(2)} L`;
+        }
+
+        // Update live stats on every input change
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('input', updateLiveStats);
+        });
+
+        // Update contest period when changed
+        document.querySelectorAll('input[name="contestPeriod"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const periodDisplay = updateContestPeriodDisplay();
+                showToast(`Switched to ${periodDisplay} contest`);
+            });
+        });
+
+        // Initialize live stats on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLiveStats();
+            updateContestPeriodDisplay();
+        });
+
+        // Fill example
+        document.getElementById("fillExample").addEventListener("click", function() {
+            document.getElementById("p1cat").value="GAIN";
+            document.getElementById("p1nop").value="2";
+            document.getElementById("p1ats").value="1.5";
+            document.getElementById("p2cat").value="ACE";
+            document.getElementById("p2nop").value="1";
+            document.getElementById("p2ats").value="2";
+            document.getElementById("l1active").value="1";
+            document.getElementById("l1cat").value="GAIN";
+            document.getElementById("l1nop").value="1";
+            document.getElementById("l1ats").value="1.1";
+            
+            updateLiveStats();
+            showToast('Example data loaded');
+        });
+
+        // Calculate
+        document.getElementById("calc").addEventListener("click", function() {
+            const btn = this;
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                let p1cat=document.getElementById("p1cat").value;
+                let p1nop=parseFloat(document.getElementById("p1nop").value)||0;
+                let p1ats=parseFloat(document.getElementById("p1ats").value)||0;
+                let p2cat=document.getElementById("p2cat").value;
+                let p2nop=parseFloat(document.getElementById("p2nop").value)||0;
+                let p2ats=parseFloat(document.getElementById("p2ats").value)||0;
+                let l1active=parseInt(document.getElementById("l1active").value)||0;
+                let l1cat=document.getElementById("l1cat").value;
+                let l1nop=parseFloat(document.getElementById("l1nop").value)||0;
+                let l1ats=parseFloat(document.getElementById("l1ats").value)||0;
+
+                // Calculate Estimated Revenue (WRP)
+                let wrp = 0;
+                if(p1nop>0) wrp += p1nop * p1ats;
+                if(p2nop>0 && p2cat) wrp += p2nop * p2ats;
+                if(l1active>0 && l1nop>0 && l1cat) wrp += l1active * l1nop * l1ats;
+
+                // Calculate Weighted Performance (WCP)
+                let wcp = 0;
+                if(p1nop>0 && p1cat) {
+                    const credit = getCreditPercentage(p1cat, p1ats);
+                    wcp += p1nop * p1ats * credit;
+                }
+                if(p2nop>0 && p2cat) {
+                    const credit = getCreditPercentage(p2cat, p2ats);
+                    wcp += p2nop * p2ats * credit;
+                }
+                if(l1active>0 && l1nop>0 && l1cat) {
+                    const credit = getCreditPercentage(l1cat, l1ats);
+                    wcp += l1active * l1nop * l1ats * credit;
+                }
+
+                // Self commission calculation
+                let selfComm = 0;
+                if(p1nop>0 && p1cat) {
+                    selfComm += p1nop * p1ats * fycPercentages[p1cat];
+                }
+                if(p2nop>0 && p2cat) {
+                    selfComm += p2nop * p2ats * fycPercentages[p2cat];
+                }
+                
+                // L1 commission calculation
+                let l1Comm = 0;
+                if(l1active>0 && l1nop>0 && l1cat) {
+                    l1Comm += l1active * l1nop * l1ats * fycPercentages[l1cat];
+                }
+                
+                let totalComm = selfComm + l1Comm;
+                
+                // MPI
+                let mpiPct = getMPIpercent(wcp);
+                let mpi = totalComm * mpiPct;
+
+                // L1 activation bonus
+                let l1Bonus = getL1ActivationBonus(l1active);
+
+                // AO Incentive
+                let aoIncentive = selfComm + mpi + l1Bonus + 0.02;
+
+                // Get selected contest period
+                const contestPeriod = getSelectedContestPeriod();
+                const periodData = contestPeriodData[contestPeriod];
+
+                // Rewards based on contest period
+                let ak = periodData.getAK(wcp);
+                let cash = periodData.getCash(wcp);
+                let trip = periodData.getTripLabel(wcp);
+                let aoReward = ak + cash;
+
+                // Calculate FINAL REWARD
+                let finalReward = aoIncentive + aoReward;
+
+                // Get performance tier
+                let performanceTier = getPerformanceTier(wcp);
+
+                // Calculate policy counts
+                let selfPolicies = p1nop + (p2nop>0 && p2cat ? p2nop : 0);
+                let teamPolicies = l1active>0 && l1cat ? l1active * l1nop : 0;
+
+                // Display results
+                const resultsSection = document.getElementById("resultsSection");
+                const tripBadgeContainer = document.getElementById("tripBadgeContainer");
+                const tripText = document.getElementById("tripText");
+                const tripSubtext = document.getElementById("tripSubtext");
+                const tripSubtextLabel = document.getElementById("tripSubtextLabel");
+
+                // Update all result displays
+                document.getElementById('totalEarnings').textContent = `${finalReward.toFixed(2)} L`;
+                document.getElementById('breakdownIncentive').textContent = `${aoIncentive.toFixed(2)} L`;
+                document.getElementById('rewardAmount').textContent = `${aoReward.toFixed(2)} L`;
+                document.getElementById('performanceTier').textContent = performanceTier;
+                document.getElementById('selfPolicies').textContent = selfPolicies;
+                document.getElementById('teamPolicies').textContent = teamPolicies;
+                
+                // Update contest period display
+                updateContestPeriodDisplay();
+                
+                // Show/hide trip badge
+                if (trip) {
+                    tripText.textContent = trip;
+                    tripBadgeContainer.style.display = 'block';
+                    
+                    // Show "+ Trip" in additional rewards breakdown
+                    tripSubtextLabel.textContent = trip;
+                    tripSubtext.style.display = 'flex';
+                } else {
+                    tripBadgeContainer.style.display = 'none';
+                    tripSubtext.style.display = 'none';
+                }
+                
+                // Show results section
+                resultsSection.style.display = "block";
+                
+                // Reset button
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                
+                // Show appropriate toast message
+                if (trip) {
+                    showToast(`Trip reward unlocked! ${trip} 🎉`);
+                } else {
+                    showToast('Calculation complete');
+                }
+                
+                // Scroll to results
+                setTimeout(() => {
+                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            }, 800);
+        });
+
+        // Initialize
+        setTimeout(() => {
+            showToast('Ready to calculate');
+        }, 1000);
+    </script>
+</body>
+</html>
