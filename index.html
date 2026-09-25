@@ -330,23 +330,20 @@ select:focus, input:focus { color: var(--maroon); }
             <tr><td>3</td><td>₹2.5L</td><td>₹3.5L</td><td class="hl">₹35,000</td><td>None</td></tr>
             <tr><td>4</td><td>₹3.5L</td><td>₹5.0L</td><td class="hl">None</td><td>Cordelia 2N</td></tr>
             <tr><td>5</td><td>₹5.0L</td><td>₹7.5L</td><td class="hl">₹20,000</td><td class="hl">Cordelia 2N</td></tr>
-            <tr><td>6</td><td>₹6.5L</td><td>₹10.0L</td>None</td><td class="hl">Bali 2N/3D</td></tr>
+            <tr><td>6</td><td>₹6.5L</td><td>₹10.0L</td><td class="hl">None</td><td class="hl">Bali 2N/3D</td></tr>
             <tr><td>7</td><td>₹8.0L</td><td>₹12.0L</td><td class="hl">₹25,000</td><td class="hl">Bali 2N/3D</td></tr>
+            <tr><td>9</td><td>≥ ₹12.0L</td><td>≥ ₹12.0L</td><td class="hl">₹25,000 + ₹25,000 for every complete ₹2L beyond ₹12L</td><td class="hl">Bali 2N/3D</td></tr>
           </tbody>
         </table>
       </div>
 
-      <div class="modal-section-lbl">Self-Sourced Business</div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-user-tie"></i></div><div class="assump-text">Premium sourced directly by the AO counts <span class="mark">1:1 as WCP</span> - it is not scaled by FYC%.</div></div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-coins"></i></div><div class="assump-text">FYC% of that premium is paid as a <span class="mark">separate cash incentive</span>, on top of the slab-based payout - e.g. ₹1L premium at 20% FYC pays an extra ₹20,000.</div></div>
-
       <div class="modal-section-lbl">Initiative Rules</div>
       <div class="assumption-row"><div class="assump-icon"><i class="fas fa-users"></i></div><div class="assump-text">Minimum <span class="mark">2 qualifying L1s</span> required (sum of # Active L1 this period + # New L1 recruited this month, counting a group only if its avg WCP is above <span class="mark">₹50,000</span>) - else cash reward is cut by <span class="mark">50%</span> and trips need a <span class="mark">₹10,000 co-pay</span>.</div></div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-layer-group"></i></div><div class="assump-text">Beyond <span class="mark">₹12L</span> total WCP, every ₹2L earns a flat <span class="mark">₹25,000</span>.</div></div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-plane"></i></div><div class="assump-text">Bali trip encashment rate: <span class="mark">₹80,000</span> flat.</div></div>
+      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-layer-group"></i></div><div class="assump-text">At <span class="mark">₹12L</span> total WCP, the top slab pays <span class="mark">₹25,000</span>. Every complete <span class="mark">₹2L beyond ₹12L</span> adds another <span class="mark">₹25,000</span> (e.g. ₹15L = ₹25,000 + ₹25,000).</div></div>
+      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-plane"></i></div><div class="assump-text">Trip encashment rates: <span class="mark">Cordelia ₹45,000</span> and <span class="mark">Bali ₹80,000</span>.</div></div>
 
       <div class="modal-section-lbl">Quality New L1 Recruitment</div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-user-check"></i></div><div class="assump-text">For each <span class="mark">newly recruited</span> L1 this period with ≥ ₹2L avg WCP → <span class="mark">₹2,500</span> per L1. If that recruited L1's avg WCP also crosses the KL-trip threshold (₹5L till 17 Jul / ₹7.5L till 31 Jul) → the reward becomes <span class="mark">₹6,000</span> per L1 instead.</div></div>
+      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-user-check"></i></div><div class="assump-text">For each <span class="mark">newly recruited</span> L1 this period with ≥ ₹2L avg WCP → <span class="mark">₹2,500</span> per L1. If that recruited L1's avg WCP also crosses the higher quality threshold (₹5L till 15 Sep / ₹7.5L till 30 Sep) → the reward becomes <span class="mark">₹6,000</span> per L1 instead.</div></div>
 
       <div class="modal-section-lbl">Quarterly Top L1 Increase</div>
       <table class="rate-tbl">
@@ -384,7 +381,7 @@ select:focus, input:focus { color: var(--maroon); }
     <div class="header-kpis">
       <div class="kpi-cell"><div class="kpi-val" id="hdrWcp">₹0.00L</div><div class="kpi-lbl">Total WCP</div></div>
       <div class="kpi-cell"><div class="kpi-val" id="hdrSlab">None</div><div class="kpi-lbl">Slab Reached</div></div>
-      <div class="kpi-cell"><div class="kpi-val" id="hdrTrip">No</div><div class="kpi-lbl">KL Trip</div></div>
+      <div class="kpi-cell"><div class="kpi-val" id="hdrTrip">No</div><div class="kpi-lbl">Trip</div></div>
       <div class="kpi-cell"><div class="kpi-val" id="hdrPayout">₹0.00L</div><div class="kpi-lbl">Total Payout</div></div>
     </div>
   </div>
@@ -406,36 +403,11 @@ select:focus, input:focus { color: var(--maroon); }
   <!-- WCP COMPONENTS -->
   <div class="section-lbl">WCP Components This Period</div>
 
-  <!-- 1. SELF SOURCED -->
-  <div class="card">
-    <div class="card-hd">
-      <div class="card-hd-icon"><i class="fas fa-user-tie"></i></div>
-      <div class="card-hd-title">1. Self-Sourced Business</div>
-    </div>
-    <div class="card-body">
-      <div class="two-col">
-        <div class="field">
-          <label class="field-label">WCP</label>
-          <div class="input-box affix-row"><span class="input-affix">₹</span><input type="number" id="premiumSourced" value="1000000" min="0"></div>
-          <div class="field-hint" id="premiumSourcedHint"></div>
-        </div>
-        <div class="field">
-          <div class="field-label-row">
-            <label class="field-label" style="margin-bottom:0;">FYC Rate</label>
-            <span class="info-tip" tabindex="0" aria-label="First Year Commission - the AO's own commission rate on this premium. Paid as a separate cash incentive on top of the slab reward."><i class="fas fa-circle-info"></i><span class="info-tip-bubble">First Year Commission - the AO's own commission rate on this premium. Paid as a separate cash incentive on top of the slab reward.</span></span>
-          </div>
-          <div class="input-box affix-row suffix"><input type="number" id="fycRate" value="20" min="0" max="100" step="0.1"><span class="input-affix">%</span></div>
-        </div>
-      </div>
-      <div class="card-contribution"><i class="fas fa-circle-plus"></i><span id="selfSourcedContribution">Adds ₹0 to WCP</span></div>
-    </div>
-  </div>
-
-  <!-- 2. EXISTING L1 TEAM -->
+  <!-- 1. EXISTING L1 TEAM -->
   <div class="card">
     <div class="card-hd">
       <div class="card-hd-icon"><i class="fas fa-users"></i></div>
-      <div class="card-hd-title">2. Existing L1 Team</div>
+      <div class="card-hd-title">1. Existing L1 Team</div>
       <span class="info-tip" tabindex="0" aria-label="L1 = your first-line downline agents (Executive/Insurance Manager). At least 2, counting active + newly recruited L1s with avg WCP above ₹50,000, are required to avoid the initiative penalty."><i class="fas fa-circle-info"></i><span class="info-tip-bubble">L1 = your first-line downline agents (Executive/Insurance Manager). At least 2, counting active + newly recruited L1s with avg WCP above ₹50,000, are required to avoid the initiative penalty.</span></span>
     </div>
     <div class="card-body">
@@ -458,11 +430,11 @@ select:focus, input:focus { color: var(--maroon); }
     </div>
   </div>
 
-  <!-- 3. RECRUITED L1s -->
+  <!-- 2. RECRUITED L1s -->
   <div class="card">
     <div class="card-hd">
       <div class="card-hd-icon"><i class="fas fa-user-plus"></i></div>
-      <div class="card-hd-title">3. Recruited L1s</div>
+      <div class="card-hd-title">2. Recruited L1s</div>
     </div>
     <div class="card-body">
       <div class="two-col">
@@ -548,7 +520,7 @@ select:focus, input:focus { color: var(--maroon); }
     <div class="card-body">
       <div class="checkline">
         <input type="checkbox" id="encashTrip" checked>
-        <label for="encashTrip">Encash the Bali trip instead of travelling (₹80,000 flat)</label>
+        <label for="encashTrip">Encash the earned trip instead of travelling (Cordelia ₹45,000 / Bali ₹80,000)</label>
       </div>
     </div>
   </div>
@@ -570,7 +542,7 @@ select:focus, input:focus { color: var(--maroon); }
     </div>
     <div class="card-body">
       <div class="scenario-grid">
-        <button class="scenario-btn" onclick="loadScenario('solo')">Solo AO <span>No L1, ₹8L WCP</span></button>
+        <button class="scenario-btn" onclick="loadScenario('solo')">Cordelia Example <span>2 L1s, ₹3.5L WCP, till 15 Sep</span></button>
         <button class="scenario-btn" onclick="loadScenario('single_l1')">Single L1 Recruiter <span>1 L1, ₹15L WCP, till 15 Sep</span></button>
         <button class="scenario-btn" onclick="loadScenario('two_l1')">Two Active L1s <span>Full initiative payout</span></button>
         <button class="scenario-btn" onclick="loadScenario('power')">Power Recruiter <span>CEO Council + ARDM qualified</span></button>
@@ -613,7 +585,7 @@ select:focus, input:focus { color: var(--maroon); }
     <div class="stat-row">
       <div class="stat-tile" id="qs_cash_tile"><div class="stat-val" id="qs_cash">₹0</div><div class="stat-lbl">Cash Rewards</div></div>
       <div class="stat-tile" id="qs_trip_tile"><div class="stat-val" id="qs_trip">₹0</div><div class="stat-lbl">Trip Value</div></div>
-      <div class="stat-tile" id="qs_incentives_tile"><div class="stat-val" id="qs_incentives">₹0</div><div class="stat-lbl">L1 &amp; FYC Incentives</div></div>
+      <div class="stat-tile" id="qs_incentives_tile"><div class="stat-val" id="qs_incentives">₹0</div><div class="stat-lbl">L1 Incentives</div></div>
     </div>
 
     <!-- WCP COMPOSITION -->
@@ -683,7 +655,12 @@ const SLABS = {
   31: { thresholds:[150000,250000,350000,500000,750000,1000000,1200000], label:'Contest till 30th Sep' }
 };
 const CASH_REWARD = [10000,25000,35000,0,20000,0,25000];
-const TRIP_FLAG   = [false,false,false,true,true,true,true];
+const TRIP_TYPE   = [null,null,null,'Cordelia','Cordelia','Bali','Bali'];
+const TRIP_ENCASH_VALUE = { Cordelia:45000, Bali:80000 };
+const TOP_SLAB_THRESHOLD = 1200000;
+const TOP_SLAB_CASH = 25000;
+const BEYOND_12L_STEP = 200000;
+const BEYOND_12L_REWARD = 25000;
 const TOPL1_REWARD = {0:0,1:7500,2:15000,3:30000};
 
 let currentPeriod = 17;
@@ -767,25 +744,17 @@ function validateInputs(totalWCP, annualWCP, annualL1, l1Active, recruitedL1Coun
 }
 
 function calculate(){
-  const premiumSourced    = parseFloat(document.getElementById('premiumSourced').value)||0;
-  const fycRate           = parseFloat(document.getElementById('fycRate').value)||0;
   const l1Active          = parseFloat(document.getElementById('l1Active').value)||0;
   const avgL1WCP          = parseFloat(document.getElementById('avgL1WCP').value)||0;
   const recruitedL1Count  = parseFloat(document.getElementById('recruitedL1Count').value)||0;
   const avgRecruitedL1WCP = parseFloat(document.getElementById('avgRecruitedL1WCP').value)||0;
-  const encash     = document.getElementById('encashTrip').checked;
+  const encash             = document.getElementById('encashTrip').checked;
 
-  // Premium Sourced IS the WCP (1:1) - FYC% only tells us the AO's commission earned on it,
-  // it does NOT get applied when computing WCP. It is paid as a separate cash incentive.
-  const selfSourcedWCP = premiumSourced;
-  const selfSourcedFYCIncentive = premiumSourced * fycRate/100;
   const existingL1WCP  = l1Active * avgL1WCP;
   const recruitedL1WCP = recruitedL1Count * avgRecruitedL1WCP;
-  const totalWCP = selfSourcedWCP + existingL1WCP + recruitedL1WCP;
+  const totalWCP = existingL1WCP + recruitedL1WCP;
 
-  // Rolling 12-month annual figures must be at least this period's contribution (this period
-  // is part of the rolling year). Auto-populate the minimum unless the person has typed their
-  // own value into these two fields - once they have, we validate instead of overwriting them.
+  // Rolling 12-month annual figures must be at least this period's contribution.
   const minAnnualWCP = totalWCP;
   const minAnnualL1  = l1Active + recruitedL1Count;
   if(!annualWCPTouched) document.getElementById('annualWCP').value = minAnnualWCP;
@@ -795,17 +764,12 @@ function calculate(){
   const annualL1  = parseFloat(document.getElementById('annualL1').value)||0;
   const isValid = (annualWCP >= minAnnualWCP - 0.001) && (annualL1 >= minAnnualL1);
 
-  // Each card states its own contribution exactly once (no header/footer duplication)
-  document.getElementById('selfSourcedContribution').innerHTML =
-    `Adds <strong>${fmtRs(selfSourcedWCP)}</strong> to WCP` + (selfSourcedFYCIncentive>0 ? ` · FYC incentive <strong>${fmtRs(selfSourcedFYCIncentive)}</strong>` : '');
   document.getElementById('l1Contribution').innerHTML =
     `Adds <strong>${fmtRs(existingL1WCP)}</strong> to WCP`;
   document.getElementById('recruitedContribution').innerHTML =
     `Adds <strong>${fmtRs(recruitedL1WCP)}</strong> to WCP`;
 
   document.getElementById('totalWcpDisplay').textContent = fmtRs(totalWCP);
-
-  document.getElementById('premiumSourcedHint').innerHTML = `= <strong>${fmtL(premiumSourced)}</strong>`;
   document.getElementById('avgL1WCPHint').innerHTML = `= <strong>${fmtL(avgL1WCP)}</strong> per L1`;
   document.getElementById('avgRecruitedL1WCPHint').innerHTML = `= <strong>${fmtL(avgRecruitedL1WCP)}</strong> per L1`;
   document.getElementById('annualWCPHint').innerHTML = `= <strong>${fmtL(annualWCP)}</strong>${!annualWCPTouched?' (auto-set to this period\'s minimum)':''}`;
@@ -814,26 +778,40 @@ function calculate(){
 
   const slabSet = SLABS[currentPeriod];
   const slabIdx = findSlab(totalWCP, slabSet.thresholds);
+  const topSlabReached = totalWCP >= TOP_SLAB_THRESHOLD;
   const lineItems = [];
-  let cashComponents = 0, tripEarned = false, slabCash = 0;
+  let cashComponents = 0, tripType = null, slabCash = 0;
+  let displaySlabNo = slabIdx>=0 ? slabIdx+1 : null;
 
-  if(slabIdx===-1){
+  if(topSlabReached){
+    displaySlabNo = 9;
+    slabCash = TOP_SLAB_CASH;
+    tripType = 'Bali';
+    cashComponents += slabCash;
+    lineItems.push({
+      desc:`Slab 9 reached - ₹12L+ top slab`,
+      formula:`WCP ${fmtRs(totalWCP)} ≥ ₹12,00,000 · Bali 2N/3D`,
+      amt: slabCash, dot:'#7b0d0d'
+    });
+  } else if(slabIdx===-1){
     lineItems.push({desc:`No slab reached`, formula:`WCP ${fmtRs(totalWCP)} < Slab 1 (${fmtRs(slabSet.thresholds[0])})`, amt:0, dot:'#ccc'});
   } else {
     slabCash = CASH_REWARD[slabIdx];
-    tripEarned = TRIP_FLAG[slabIdx];
+    tripType = TRIP_TYPE[slabIdx];
     cashComponents += slabCash;
     lineItems.push({
       desc:`Slab ${slabIdx+1} reached - ${slabSet.label}`,
-      formula:`WCP ${fmtRs(totalWCP)} ≥ threshold ${fmtRs(slabSet.thresholds[slabIdx])}${tripEarned?' · KL Fully Sponsored':''}`,
+      formula:`WCP ${fmtRs(totalWCP)} ≥ threshold ${fmtRs(slabSet.thresholds[slabIdx])}${tripType?` · ${tripType} trip`:''}`,
       amt: slabCash, dot: slabCash>0?'#7b0d0d':'#ccc'
     });
   }
 
+  // Once ₹12L is reached, ₹25K is already paid through Slab 9 above.
+  // Every COMPLETE ₹2L beyond ₹12L adds another ₹25K.
   let beyondReward=0, beyondUnits=0;
-  if(totalWCP>1200000){
-    beyondUnits=Math.floor((totalWCP-1200000)/200000);
-    beyondReward=beyondUnits*25000;
+  if(totalWCP>TOP_SLAB_THRESHOLD){
+    beyondUnits=Math.floor((totalWCP-TOP_SLAB_THRESHOLD)/BEYOND_12L_STEP);
+    beyondReward=beyondUnits*BEYOND_12L_REWARD;
   }
   if(beyondUnits>0){
     lineItems.push({desc:'Beyond ₹12L WCP bonus', formula:`floor((${fmtRs(totalWCP)} − ₹12,00,000)/₹2,00,000) = ${beyondUnits} × ₹25,000`, amt:beyondReward, dot:'#a83232'});
@@ -847,20 +825,31 @@ function calculate(){
     cashAfterPenalty = cashComponents*0.5;
     lineItems.push({desc:'Initiative shortfall - fewer than 2 active L1s', formula:`Cash reward reduced 50%: ${fmtRs(cashComponents)} → ${fmtRs(cashAfterPenalty)}`, amt:-(cashComponents-cashAfterPenalty), dot:'#7b0d0d', neg:true});
   }
-  const copay = (penalty && tripEarned) ? 10000 : 0;
 
+  const tripEarned = !!tripType;
+  const copay = (penalty && tripEarned) ? 10000 : 0;
   let tripValue=0;
   if(tripEarned){
+    const encashBase = TRIP_ENCASH_VALUE[tripType] || 0;
     if(encash){
-      tripValue = 80000-copay;
-      lineItems.push({desc: copay>0?'Bali trip encashed (less co-pay)':'Bali trip encashed', formula: copay>0?'₹80,000 - ₹10,000 co-pay':'Flat encashment rate', amt:tripValue, dot:'#888'});
+      tripValue = Math.max(0, encashBase-copay);
+      lineItems.push({
+        desc: copay>0?`${tripType} trip encashed (less co-pay)`:`${tripType} trip encashed`,
+        formula: copay>0?`${fmtRs(encashBase)} - ₹10,000 co-pay`:`Flat ${tripType} encashment rate`,
+        amt:tripValue, dot:'#888'
+      });
     } else {
-      lineItems.push({desc:'Bali trip - Fully Sponsored (physical travel)', formula: copay>0?'Not encashed - ₹10,000 co-pay payable due to initiative shortfall':'Not encashed - no cash value added', amt:0, dot:'#ccc'});
+      lineItems.push({
+        desc:`${tripType} trip - physical travel`,
+        formula: copay>0?'Not encashed - ₹10,000 co-pay payable due to initiative shortfall':'Not encashed - no cash value added',
+        amt:0, dot:'#ccc'
+      });
     }
   }
 
   const totalCash = cashAfterPenalty+tripValue;
 
+  // Existing quality-L1 incentive logic retained unchanged.
   const tier2Threshold = currentPeriod===17?500000:750000;
   let qualityReward=0;
   const qualityLines=[];
@@ -868,7 +857,7 @@ function calculate(){
     if(avgRecruitedL1WCP>=tier2Threshold){
       const amt=recruitedL1Count*6000;
       qualityReward+=amt;
-      qualityLines.push({desc:`${recruitedL1Count} new L1(s) cross KL-trip threshold`, formula:`≥ ${fmtRs(tier2Threshold)} avg · ${recruitedL1Count} × ₹6,000`, amt:amt, dot:'#a83232'});
+      qualityLines.push({desc:`${recruitedL1Count} new L1(s) cross higher quality threshold`, formula:`≥ ${fmtRs(tier2Threshold)} avg · ${recruitedL1Count} × ₹6,000`, amt:amt, dot:'#a83232'});
     } else {
       const amt=recruitedL1Count*2500;
       qualityReward+=amt;
@@ -877,7 +866,7 @@ function calculate(){
   }
 
   const topL1Reward = TOPL1_REWARD[topL1Inc];
-  const grandTotal = totalCash+qualityReward+topL1Reward+selfSourcedFYCIncentive;
+  const grandTotal = totalCash+qualityReward+topL1Reward;
 
   let ceoStatus='none', ceoShortfall=0;
   if(annualWCP>=9000000) ceoStatus='both';
@@ -889,19 +878,18 @@ function calculate(){
   const ardmQualified = ardmWCPmet && ardmL1met;
 
   lastCalc = {
-    totalWCP, slabIdx, slabSet, lineItems, slabCash, cashComponents, cashAfterPenalty, penalty, copay,
-    tripEarned, encash, tripValue, totalCash, qualityReward, qualityLines, topL1Reward, grandTotal,
+    totalWCP, slabIdx, slabSet, displaySlabNo, topSlabReached, lineItems, slabCash, cashComponents, cashAfterPenalty, penalty, copay,
+    tripEarned, tripType, encash, tripValue, totalCash, qualityReward, qualityLines, topL1Reward, grandTotal,
     ceoStatus, ceoShortfall, annualWCP, ardmWCPmet, ardmL1met, ardmQualified, annualL1,
-    beyondReward, isValid, minAnnualWCP, minAnnualL1, qualifyingL1Count,
-    premiumSourced, fycRate, selfSourcedWCP, selfSourcedFYCIncentive,
+    beyondReward, beyondUnits, isValid, minAnnualWCP, minAnnualL1, qualifyingL1Count,
     l1Active, avgL1WCP, existingL1WCP,
     recruitedL1Count, avgRecruitedL1WCP, recruitedL1WCP
   };
 
   // header KPIs
   document.getElementById('hdrWcp').textContent = fmtL(totalWCP);
-  document.getElementById('hdrSlab').textContent = slabIdx>=0? ('Slab '+(slabIdx+1)) : 'None';
-  document.getElementById('hdrTrip').textContent = tripEarned? (encash?'Encashed':'Booked') : 'No';
+  document.getElementById('hdrSlab').textContent = displaySlabNo ? ('Slab '+displaySlabNo) : 'None';
+  document.getElementById('hdrTrip').textContent = tripEarned ? `${tripType}${encash?' Encash':' Trip'}` : 'No';
   document.getElementById('hdrPayout').textContent = isValid ? fmtL(grandTotal) : '—';
 
   updateResults();
@@ -915,7 +903,7 @@ function updateResults(){
   if(!d.isValid){
     document.getElementById('finalReward').textContent = '—';
     document.getElementById('rewardSub').textContent = 'Fix the annual rolling figures above (they must be at least this period\'s WCP and L1s) to calculate the payout';
-    document.getElementById('slabLabel').textContent = d.slabIdx>=0 ? `Slab ${d.slabIdx+1} of 7` : 'No slab reached';
+    document.getElementById('slabLabel').textContent = d.displaySlabNo ? `Slab ${d.displaySlabNo}` : 'No slab reached';
     document.getElementById('initLabel').textContent = 'Initiative: pending';
     ['qs_cash','qs_trip','qs_incentives'].forEach(id=>document.getElementById(id).textContent='—');
     document.getElementById('qs_cash_tile').classList.add('subdued');
@@ -931,7 +919,7 @@ function updateResults(){
 
   document.getElementById('finalReward').textContent=fmtRs(d.grandTotal);
   document.getElementById('rewardSub').textContent='Cash reward + trip encashment + L1 incentives';
-  document.getElementById('slabLabel').textContent = d.slabIdx>=0 ? `Slab ${d.slabIdx+1} of 7` : 'No slab reached';
+  document.getElementById('slabLabel').textContent = d.displaySlabNo ? `Slab ${d.displaySlabNo}` : 'No slab reached';
   document.getElementById('initLabel').textContent = d.penalty ? 'Initiative: shortfall (−50%)' : 'Initiative: met';
 
   // Career milestones — highlighted separately from the payout figures
@@ -961,7 +949,7 @@ function updateResults(){
   // Quick stats — 3 headline numbers, MECE with the grand total (cash + trip + incentives = grand total)
   const qsCash = d.cashAfterPenalty;
   const qsTrip = d.tripValue;
-  const qsIncentives = d.selfSourcedFYCIncentive + d.qualityReward + d.topL1Reward;
+  const qsIncentives = d.qualityReward + d.topL1Reward;
   document.getElementById('qs_cash').textContent = fmtRs(qsCash);
   document.getElementById('qs_trip').textContent = fmtRs(qsTrip);
   document.getElementById('qs_incentives').textContent = fmtRs(qsIncentives);
@@ -971,12 +959,6 @@ function updateResults(){
 
   // breakdown
   let html='';
-  if(d.selfSourcedFYCIncentive>0){
-    html+=`<div class="breakdown-row">
-      <div class="bd-label"><span class="bd-dot" style="background:#7b0d0d"></span><div class="bd-main"><span>Self-sourced FYC incentive</span><span class="bd-formula">${fmtRs(d.premiumSourced)} × ${d.fycRate}% FYC</span></div></div>
-      <div class="bd-amount">${fmtRs(d.selfSourcedFYCIncentive)}</div>
-    </div>`;
-  }
   d.lineItems.forEach(li=>{
     html+=`<div class="breakdown-row">
       <div class="bd-label"><span class="bd-dot" style="background:${li.dot}"></span><div class="bd-main"><span>${li.desc}</span><span class="bd-formula">${li.formula}</span></div></div>
@@ -1006,7 +988,6 @@ function updateResults(){
 
 function buildWcpComposition(d){
   const rows=[
-    { label:'Self-Sourced Business', formula:`Premium sourced, counted in full`, amt:d.selfSourcedWCP, dot:'#7b0d0d' },
     { label:'Existing L1 Team', formula:`${d.l1Active} L1(s) × ${fmtRs(d.avgL1WCP)} avg`, amt:d.existingL1WCP, dot:'#9e1515' },
     { label:'Recruited L1s', formula:`${d.recruitedL1Count} L1(s) × ${fmtRs(d.avgRecruitedL1WCP)} avg`, amt:d.recruitedL1WCP, dot:'#c96060' }
   ];
@@ -1026,7 +1007,6 @@ function renderChart(d){
   if(chartInst){chartInst.destroy();chartInst=null;}
   const labels=[], vals=[], colors=[];
   const push=(l,v,c)=>{ if(v>0){labels.push(l);vals.push(parseFloat(v.toFixed(2)));colors.push(c);} };
-  push('Self-Sourced FYC Incentive', d.selfSourcedFYCIncentive, '#5a0909');
   push('Slab Cash Reward', d.slabCash*(d.penalty?0.5:1), '#7b0d0d');
   push('Beyond-12L Bonus', d.beyondReward*(d.penalty?0.5:1), '#a83232');
   push('Trip Encashment', d.tripValue, '#c96060');
@@ -1061,13 +1041,23 @@ function buildStatusTable(d){
 }
 
 function buildInsights(d){
-  // Next slab
+  // Next slab / ₹12L+ progression
   const slabBox=document.getElementById('ins_slab'), slabText=document.getElementById('ins_slab_text');
-  if(d.slabIdx<6){
+  if(d.topSlabReached){
+    const nextBonusThreshold = TOP_SLAB_THRESHOLD + (d.beyondUnits+1)*BEYOND_12L_STEP;
+    const gap = nextBonusThreshold-d.totalWCP;
+    slabText.innerHTML=`Adding <strong>${fmtRs(gap)}</strong> more WCP reaches ${fmtRs(nextBonusThreshold)} and unlocks the next <strong>₹25,000</strong> beyond-₹12L bonus.`;
+    slabBox.classList.remove('hidden'); slabBox.classList.remove('ok','warn');
+  } else if(d.slabIdx<6){
     const nextThreshold=d.slabSet.thresholds[d.slabIdx+1];
     const gap=nextThreshold-d.totalWCP;
-    const nextCash=CASH_REWARD[d.slabIdx+1], nextTrip=TRIP_FLAG[d.slabIdx+1];
-    slabText.innerHTML=`Adding <strong>${fmtRs(gap)}</strong> more WCP reaches Slab ${d.slabIdx+2} (${fmtRs(nextThreshold)}), unlocking ${nextCash>0?`<strong>${fmtRs(nextCash)}</strong> cash`:''}${nextCash>0&&nextTrip?' + ':''}${nextTrip?'<strong>KL Fully Sponsored trip</strong>':''}.`;
+    const nextCash=CASH_REWARD[d.slabIdx+1], nextTrip=TRIP_TYPE[d.slabIdx+1];
+    const nextSlabNo = nextThreshold>=TOP_SLAB_THRESHOLD ? 9 : d.slabIdx+2;
+    slabText.innerHTML=`Adding <strong>${fmtRs(gap)}</strong> more WCP reaches Slab ${nextSlabNo} (${fmtRs(nextThreshold)}), unlocking ${nextCash>0?`<strong>${fmtRs(nextCash)}</strong> cash`:''}${nextCash>0&&nextTrip?' + ':''}${nextTrip?`<strong>${nextTrip} trip</strong>`:''}.`;
+    slabBox.classList.remove('hidden'); slabBox.classList.remove('ok','warn');
+  } else if(d.totalWCP<TOP_SLAB_THRESHOLD){
+    const gap=TOP_SLAB_THRESHOLD-d.totalWCP;
+    slabText.innerHTML=`Adding <strong>${fmtRs(gap)}</strong> more WCP reaches the <strong>₹12L top slab</strong>. From there, every complete ₹2L beyond ₹12L adds another <strong>₹25,000</strong>.`;
     slabBox.classList.remove('hidden'); slabBox.classList.remove('ok','warn');
   } else { slabBox.classList.add('hidden'); }
 
@@ -1119,8 +1109,6 @@ function handleCalculate(){
 }
 
 function clearAll(){
-  document.getElementById('premiumSourced').value=0;
-  document.getElementById('fycRate').value=0;
   document.getElementById('l1Active').value=0;
   document.getElementById('avgL1WCP').value=0;
   document.getElementById('recruitedL1Count').value=0;
@@ -1140,16 +1128,13 @@ function clearAll(){
 function setField(id,val){ document.getElementById(id).value = val; }
 
 function loadScenario(key){
-  // Each scenario's 3 components sum to the same "Total WCP" the scenario used to hard-code
   const sc = {
-    solo:      { premiumSourced:800000, fycRate:20, l1Active:0, avgL1WCP:0,       recruitedL1Count:0, avgRecruitedL1WCP:0,      period:17, encash:true,  topL1:'0', annualWCP:800000,   annualL1:0 },
-    single_l1: { premiumSourced:700000, fycRate:20, l1Active:0, avgL1WCP:0,       recruitedL1Count:1, avgRecruitedL1WCP:800000, period:17, encash:true,  topL1:'0', annualWCP:1500000,  annualL1:1 },
-    two_l1:    { premiumSourced:0,      fycRate:0,  l1Active:2, avgL1WCP:1000000, recruitedL1Count:2, avgRecruitedL1WCP:250000, period:31, encash:true,  topL1:'1', annualWCP:8000000,  annualL1:5 },
-    power:     { premiumSourced:100000, fycRate:20, l1Active:3, avgL1WCP:1300000, recruitedL1Count:1, avgRecruitedL1WCP:1000000,period:31, encash:false, topL1:'3', annualWCP:9500000,  annualL1:4 }
+    solo:      { l1Active:2, avgL1WCP:175000, recruitedL1Count:0, avgRecruitedL1WCP:0,       period:17, encash:true,  topL1:'0', annualWCP:350000,  annualL1:2 },
+    single_l1: { l1Active:0, avgL1WCP:0,      recruitedL1Count:1, avgRecruitedL1WCP:1500000, period:17, encash:true,  topL1:'0', annualWCP:1500000, annualL1:1 },
+    two_l1:    { l1Active:2, avgL1WCP:400000, recruitedL1Count:0, avgRecruitedL1WCP:0,       period:17, encash:true,  topL1:'1', annualWCP:8000000, annualL1:5 },
+    power:     { l1Active:3, avgL1WCP:1300000,recruitedL1Count:1, avgRecruitedL1WCP:1000000, period:31, encash:false, topL1:'3', annualWCP:9500000, annualL1:4 }
   };
   const s=sc[key]; if(!s) return;
-  setField('premiumSourced', s.premiumSourced);
-  setField('fycRate', s.fycRate);
   setField('l1Active', s.l1Active);
   setField('avgL1WCP', s.avgL1WCP);
   setField('recruitedL1Count', s.recruitedL1Count);
@@ -1169,7 +1154,7 @@ function loadScenario(key){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-  ['premiumSourced','fycRate','l1Active','avgL1WCP','recruitedL1Count','avgRecruitedL1WCP'].forEach(id=>{
+  ['l1Active','avgL1WCP','recruitedL1Count','avgRecruitedL1WCP'].forEach(id=>{
     document.getElementById(id).addEventListener('input', calculate);
   });
   document.getElementById('annualWCP').addEventListener('input', ()=>{ annualWCPTouched = true; calculate(); });
