@@ -338,12 +338,12 @@ select:focus, input:focus { color: var(--maroon); }
       </div>
 
       <div class="modal-section-lbl">Initiative Rules</div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-users"></i></div><div class="assump-text">Minimum <span class="mark">2 qualifying L1s</span> required (sum of # Active L1 this period + # New L1 recruited this month, counting a group only if its avg WCP is above <span class="mark">₹50,000</span>) - else cash reward is cut by <span class="mark">50%</span> and trips need a <span class="mark">₹10,000 co-pay</span>.</div></div>
+      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-users"></i></div><div class="assump-text">Minimum <span class="mark">2 L1 Active in Sep 2026</span> required. For this count, <span class="mark">Existing Active L1s + Recruited L1s</span> are considered together - else cash payout is reduced by <span class="mark">50%</span> and trips carry an additional <span class="mark">₹10,000 co-pay</span>.</div></div>
       <div class="assumption-row"><div class="assump-icon"><i class="fas fa-layer-group"></i></div><div class="assump-text">At <span class="mark">₹12L</span> total WCP, the top slab pays <span class="mark">₹25,000</span>. Every complete <span class="mark">₹2L beyond ₹12L</span> adds another <span class="mark">₹25,000</span> (e.g. ₹15L = ₹25,000 + ₹25,000).</div></div>
       <div class="assumption-row"><div class="assump-icon"><i class="fas fa-plane"></i></div><div class="assump-text">Trip encashment rates: <span class="mark">Cordelia ₹45,000</span> and <span class="mark">Bali ₹80,000</span>.</div></div>
 
       <div class="modal-section-lbl">Quality New L1 Recruitment</div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-user-check"></i></div><div class="assump-text">For each <span class="mark">newly recruited</span> L1 this period with ≥ ₹2L avg WCP → <span class="mark">₹2,500</span> per L1. If that recruited L1's avg WCP also crosses the higher quality threshold (₹5L till 15 Sep / ₹7.5L till 30 Sep) → the reward becomes <span class="mark">₹6,000</span> per L1 instead.</div></div>
+      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-user-check"></i></div><div class="assump-text">For each <span class="mark">newly recruited</span> L1 with ≥ ₹2L WCP in M0 → <span class="mark">₹2,500</span> per L1. If the L1 achieves <span class="mark">Cordelia qualification</span> (₹3.5L till 15 Sep / ₹5L till 30 Sep) → <span class="mark">₹6,000</span> per L1.</div></div>
 
       <div class="modal-section-lbl">Quarterly Top L1 Increase</div>
       <table class="rate-tbl">
@@ -356,8 +356,8 @@ select:focus, input:focus { color: var(--maroon); }
       </table>
 
       <div class="modal-section-lbl">CEO Council &amp; ARDM (Rolling 12 Months)</div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-trophy"></i></div><div class="assump-text"><span class="mark">₹75L</span> WCP → Prague. <span class="mark">₹90L</span> WCP → Prague + Amsterdam.</div></div>
-      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-arrow-up"></i></div><div class="assump-text"><span class="mark">₹12L WCP</span> + <span class="mark">3 L1s recruited</span> → promotion to ARDM (full-time role).</div></div>
+      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-trophy"></i></div><div class="assump-text">CEO Council Option 2: <span class="mark">₹85L WRP</span> → Prague; <span class="mark">₹100L WRP</span> → Prague + Amsterdam.</div></div>
+      <div class="assumption-row"><div class="assump-icon"><i class="fas fa-arrow-up"></i></div><div class="assump-text"><span class="mark">₹12L WCP</span> + <span class="mark">3 Quality L1s</span> recruited in rolling 12 months → ARDM business criteria met.</div></div>
     </div>
   </div>
 </div>
@@ -394,8 +394,8 @@ select:focus, input:focus { color: var(--maroon); }
   <div class="card">
     <div class="card-body">
       <div class="seg-toggle" id="periodToggle">
-        <button class="seg-btn active" data-period="17">Contest till 15th Sep</button>
-        <button class="seg-btn" data-period="31">Contest till 30th Sep</button>
+        <button class="seg-btn active" data-period="15">Contest till 15th Sep</button>
+        <button class="seg-btn" data-period="30">Contest till 30th Sep</button>
       </div>
     </div>
   </div>
@@ -408,7 +408,7 @@ select:focus, input:focus { color: var(--maroon); }
     <div class="card-hd">
       <div class="card-hd-icon"><i class="fas fa-users"></i></div>
       <div class="card-hd-title">1. Existing L1 Team</div>
-      <span class="info-tip" tabindex="0" aria-label="L1 = your first-line downline agents (Executive/Insurance Manager). At least 2, counting active + newly recruited L1s with avg WCP above ₹50,000, are required to avoid the initiative penalty."><i class="fas fa-circle-info"></i><span class="info-tip-bubble">L1 = your first-line downline agents (Executive/Insurance Manager). At least 2, counting active + newly recruited L1s with avg WCP above ₹50,000, are required to avoid the initiative penalty.</span></span>
+      <span class="info-tip" tabindex="0" aria-label="L1 = your first-line downline agents (Executive/Insurance Manager). For the September initiative, Existing Active L1s + Recruited L1s are counted together. Minimum 2 in total are required to avoid the 50% cash reduction and ₹10,000 trip co-pay."><i class="fas fa-circle-info"></i><span class="info-tip-bubble">Existing Active L1s + Recruited L1s are counted together. Minimum 2 in total are required to avoid the 50% cash reduction and ₹10,000 trip co-pay.</span></span>
     </div>
     <div class="card-body">
       <div class="two-col">
@@ -496,12 +496,12 @@ select:focus, input:focus { color: var(--maroon); }
     <div class="card-body">
       <div class="two-col">
         <div class="field">
-          <label class="field-label">Total WCP, Rolling 12 Months</label>
+          <label class="field-label">Rolling 12M Business Figure</label>
           <div class="input-box affix-row"><span class="input-affix">₹</span><input type="number" id="annualWCP" value="1500000" min="0"></div>
           <div class="field-hint" id="annualWCPHint"></div>
         </div>
         <div class="field">
-          <label class="field-label">L1s Recruited, Rolling 12 Months</label>
+          <label class="field-label">Quality L1s Recruited, Rolling 12 Months</label>
           <div class="input-box stepper-input">
             <button type="button" class="stepper-btn minus" onclick="stepValue('annualL1',-1,0)" aria-label="Decrease L1s recruited annually">−</button>
             <input type="number" id="annualL1" value="1" min="0">
@@ -545,7 +545,7 @@ select:focus, input:focus { color: var(--maroon); }
         <button class="scenario-btn" onclick="loadScenario('solo')">Cordelia Example <span>2 L1s, ₹3.5L WCP, till 15 Sep</span></button>
         <button class="scenario-btn" onclick="loadScenario('single_l1')">Single L1 Recruiter <span>1 L1, ₹15L WCP, till 15 Sep</span></button>
         <button class="scenario-btn" onclick="loadScenario('two_l1')">Two Active L1s <span>Full initiative payout</span></button>
-        <button class="scenario-btn" onclick="loadScenario('power')">Power Recruiter <span>CEO Council + ARDM qualified</span></button>
+        <button class="scenario-btn" onclick="loadScenario('power')">Power Recruiter <span>CEO Council + ARDM business criteria</span></button>
       </div>
     </div>
   </div>
@@ -570,14 +570,14 @@ select:focus, input:focus { color: var(--maroon); }
         <div class="milestone-icon"><i class="fas fa-arrow-up-right-dots"></i></div>
         <div>
           <div class="milestone-label">ARDM Promotion</div>
-          <div class="milestone-status" id="ardmMilestoneStatus">Not Yet Qualified</div>
+          <div class="milestone-status" id="ardmMilestoneStatus">Criteria Not Yet Met</div>
         </div>
       </div>
       <div class="milestone-card pending" id="ceoMilestone">
         <div class="milestone-icon"><i class="fas fa-trophy"></i></div>
         <div>
           <div class="milestone-label">CEO Council</div>
-          <div class="milestone-status" id="ceoMilestoneStatus">Not Yet Qualified</div>
+          <div class="milestone-status" id="ceoMilestoneStatus">Option 2 Not Yet Met</div>
         </div>
       </div>
     </div>
@@ -651,8 +651,8 @@ select:focus, input:focus { color: var(--maroon); }
 
 <script>
 const SLABS = {
-  17: { thresholds:[125000,200000,250000,350000,500000,650000,800000], label:'Contest till 15th Sep' },
-  31: { thresholds:[150000,250000,350000,500000,750000,1000000,1200000], label:'Contest till 30th Sep' }
+  15: { thresholds:[125000,200000,250000,350000,500000,650000,800000], label:'Contest till 15th Sep' },
+  30: { thresholds:[150000,250000,350000,500000,750000,1000000,1200000], label:'Contest till 30th Sep' }
 };
 const CASH_REWARD = [10000,25000,35000,0,20000,0,25000];
 const TRIP_TYPE   = [null,null,null,'Cordelia','Cordelia','Bali','Bali'];
@@ -662,8 +662,10 @@ const TOP_SLAB_CASH = 25000;
 const BEYOND_12L_STEP = 200000;
 const BEYOND_12L_REWARD = 25000;
 const TOPL1_REWARD = {0:0,1:7500,2:15000,3:30000};
+const CEO_PRAGUE_OPTION2 = 8500000;
+const CEO_CABINET_OPTION2 = 10000000;
 
-let currentPeriod = 17;
+let currentPeriod = 15;
 let topL1Inc = 0;
 let lastCalc = null;
 let chartInst = null;
@@ -734,13 +736,12 @@ function setWarn(boxId, msgId, active, message){
   }
 }
 
-function validateInputs(totalWCP, annualWCP, annualL1, l1Active, recruitedL1Count){
+function validateInputs(totalWCP, annualWCP, annualL1, currentQualityL1Count){
   setWarn('annualWCP','annualValidationMsg', annualWCP<totalWCP,
-    `Rolling 12-month WCP (${fmtRs(annualWCP)}) must be at least this period's WCP (${fmtRs(totalWCP)}), since this period falls within it. The Calculate button is disabled until this is fixed.`);
+    `Rolling 12-month business figure (${fmtRs(annualWCP)}) must be at least this period's WCP (${fmtRs(totalWCP)}). The Calculate button is disabled until this is fixed.`);
 
-  const minAnnualL1 = l1Active + recruitedL1Count;
-  setWarn('annualL1','annualL1ValidationMsg', annualL1<minAnnualL1,
-    `L1s recruited over the rolling 12 months (${annualL1}) must be at least this period's active L1s + newly recruited L1s (${l1Active} + ${recruitedL1Count} = ${minAnnualL1}), since this period falls within it. The Calculate button is disabled until this is fixed.`);
+  setWarn('annualL1','annualL1ValidationMsg', annualL1<currentQualityL1Count,
+    `Quality L1s recruited over the rolling 12 months (${annualL1}) must be at least the quality L1s created this month (${currentQualityL1Count}). The Calculate button is disabled until this is fixed.`);
 }
 
 function calculate(){
@@ -756,7 +757,8 @@ function calculate(){
 
   // Rolling 12-month annual figures must be at least this period's contribution.
   const minAnnualWCP = totalWCP;
-  const minAnnualL1  = l1Active + recruitedL1Count;
+  const currentQualityL1Count = avgRecruitedL1WCP >= 200000 ? recruitedL1Count : 0;
+  const minAnnualL1  = currentQualityL1Count;
   if(!annualWCPTouched) document.getElementById('annualWCP').value = minAnnualWCP;
   if(!annualL1Touched)  document.getElementById('annualL1').value  = minAnnualL1;
 
@@ -774,7 +776,7 @@ function calculate(){
   document.getElementById('avgRecruitedL1WCPHint').innerHTML = `= <strong>${fmtL(avgRecruitedL1WCP)}</strong> per L1`;
   document.getElementById('annualWCPHint').innerHTML = `= <strong>${fmtL(annualWCP)}</strong>${!annualWCPTouched?' (auto-set to this period\'s minimum)':''}`;
 
-  validateInputs(totalWCP, annualWCP, annualL1, l1Active, recruitedL1Count);
+  validateInputs(totalWCP, annualWCP, annualL1, currentQualityL1Count);
 
   const slabSet = SLABS[currentPeriod];
   const slabIdx = findSlab(totalWCP, slabSet.thresholds);
@@ -818,7 +820,8 @@ function calculate(){
     cashComponents+=beyondReward;
   }
 
-  const qualifyingL1Count = (avgL1WCP > 50000 ? l1Active : 0) + (avgRecruitedL1WCP > 50000 ? recruitedL1Count : 0);
+  // September initiative: existing active L1s and newly recruited L1s are counted together.
+  const qualifyingL1Count = l1Active + recruitedL1Count;
   const penalty = qualifyingL1Count < 2;
   let cashAfterPenalty = cashComponents;
   if(penalty && cashComponents>0){
@@ -849,15 +852,15 @@ function calculate(){
 
   const totalCash = cashAfterPenalty+tripValue;
 
-  // Existing quality-L1 incentive logic retained unchanged.
-  const tier2Threshold = currentPeriod===17?500000:750000;
+  // Quality New L1 incentive: ₹2,500 at ₹2L M0 WCP; ₹6,000 on Cordelia qualification.
+  const tier2Threshold = currentPeriod===15?350000:500000;
   let qualityReward=0;
   const qualityLines=[];
   if(recruitedL1Count>0 && avgRecruitedL1WCP>=200000){
     if(avgRecruitedL1WCP>=tier2Threshold){
       const amt=recruitedL1Count*6000;
       qualityReward+=amt;
-      qualityLines.push({desc:`${recruitedL1Count} new L1(s) cross higher quality threshold`, formula:`≥ ${fmtRs(tier2Threshold)} avg · ${recruitedL1Count} × ₹6,000`, amt:amt, dot:'#a83232'});
+      qualityLines.push({desc:`${recruitedL1Count} new L1(s) achieve Cordelia qualification`, formula:`≥ ${fmtRs(tier2Threshold)} avg · ${recruitedL1Count} × ₹6,000`, amt:amt, dot:'#a83232'});
     } else {
       const amt=recruitedL1Count*2500;
       qualityReward+=amt;
@@ -869,9 +872,9 @@ function calculate(){
   const grandTotal = totalCash+qualityReward+topL1Reward;
 
   let ceoStatus='none', ceoShortfall=0;
-  if(annualWCP>=9000000) ceoStatus='both';
-  else if(annualWCP>=7500000) ceoStatus='prague';
-  else ceoShortfall=7500000-annualWCP;
+  if(annualWCP>=CEO_CABINET_OPTION2) ceoStatus='both';
+  else if(annualWCP>=CEO_PRAGUE_OPTION2) ceoStatus='prague';
+  else ceoShortfall=CEO_PRAGUE_OPTION2-annualWCP;
 
   const ardmWCPmet = annualWCP>=1200000;
   const ardmL1met  = annualL1>=3;
@@ -926,23 +929,23 @@ function updateResults(){
   const ardmCard = document.getElementById('ardmMilestone');
   const ardmStatusEl = document.getElementById('ardmMilestoneStatus');
   if(d.ardmQualified){
-    ardmStatusEl.textContent = 'Qualified — Full-Time Role';
+    ardmStatusEl.textContent = 'WCP + Quality L1 Criteria Met';
     ardmCard.classList.add('qualified');
   } else {
-    ardmStatusEl.textContent = 'Not Yet Qualified';
+    ardmStatusEl.textContent = 'Criteria Not Yet Met';
     ardmCard.classList.remove('qualified');
   }
 
   const ceoCard = document.getElementById('ceoMilestone');
   const ceoStatusEl = document.getElementById('ceoMilestoneStatus');
   if(d.ceoStatus==='both'){
-    ceoStatusEl.textContent = 'Prague + Amsterdam';
+    ceoStatusEl.textContent = 'Prague + Amsterdam - Option 2';
     ceoCard.classList.add('qualified');
   } else if(d.ceoStatus==='prague'){
-    ceoStatusEl.textContent = 'Prague Qualified';
+    ceoStatusEl.textContent = 'Prague - Option 2';
     ceoCard.classList.add('qualified');
   } else {
-    ceoStatusEl.textContent = 'Not Yet Qualified';
+    ceoStatusEl.textContent = 'Option 2 Not Yet Met';
     ceoCard.classList.remove('qualified');
   }
 
@@ -1028,10 +1031,10 @@ function renderChart(d){
 
 function buildStatusTable(d){
   const rows=[
-    { label:'CEO Council - Prague (₹75L WCP)', required:'₹75,00,000', current: fmtRs(d.annualWCP), met: d.annualWCP>=7500000 },
-    { label:'CEO Council - + Amsterdam (₹90L WCP)', required:'₹90,00,000', current: fmtRs(d.annualWCP), met: d.annualWCP>=9000000 },
+    { label:'CEO Council - Prague (Option 2)', required:'₹85,00,000 WRP', current: fmtRs(d.annualWCP), met: d.annualWCP>=CEO_PRAGUE_OPTION2 },
+    { label:'CEO Council - Prague + Amsterdam (Option 2)', required:'₹1,00,00,000 WRP', current: fmtRs(d.annualWCP), met: d.annualWCP>=CEO_CABINET_OPTION2 },
     { label:'ARDM - ₹12L WCP', required:'₹12,00,000', current: fmtRs(d.annualWCP), met: d.ardmWCPmet },
-    { label:'ARDM - 3 L1s recruited', required:'3', current: String(d.annualL1), met: d.ardmL1met }
+    { label:'ARDM - 3 Quality L1s recruited', required:'3', current: String(d.annualL1), met: d.ardmL1met }
   ];
   let html='';
   rows.forEach(r=>{
@@ -1064,33 +1067,33 @@ function buildInsights(d){
   // Initiative
   const initBox=document.getElementById('ins_init'), initText=document.getElementById('ins_init_text');
   if(d.penalty){
-    initText.innerHTML=`Only <strong>${d.qualifyingL1Count} qualifying L1${d.qualifyingL1Count==1?'':'s'}</strong> this period (active + newly recruited, counted only where avg WCP is above ₹50,000) - below the minimum of 2. This halved the cash reward${d.tripEarned?' and added a ₹10,000 trip co-pay':''}. Getting one more L1 above the ₹50,000 avg WCP bar removes both penalties.`;
+    initText.innerHTML=`Only <strong>${d.qualifyingL1Count} L1${d.qualifyingL1Count==1?' is':'s are'} counted as active</strong> in September (Existing Active + Recruited) - below the minimum of 2. This halved the cash payout${d.tripEarned?' and added a ₹10,000 trip co-pay':''}.`;
     initBox.classList.remove('hidden'); initBox.classList.add('warn'); initBox.classList.remove('ok');
   } else { initBox.classList.add('hidden'); }
 
   // CEO council
   const ceoBox=document.getElementById('ins_ceo'), ceoText=document.getElementById('ins_ceo_text');
   if(d.ceoStatus==='both'){
-    ceoText.innerHTML=`Qualified for <strong>Prague + Amsterdam</strong> on ${fmtRs(d.annualWCP)} rolling WCP.`;
+    ceoText.innerHTML=`CEO Council Option 2 for <strong>Prague + Amsterdam</strong> is met at ${fmtRs(d.annualWCP)} rolling business.`;
     ceoBox.classList.remove('hidden'); ceoBox.classList.add('ok'); ceoBox.classList.remove('warn');
   } else if(d.ceoStatus==='prague'){
-    ceoText.innerHTML=`Qualified for <strong>Prague</strong>. Add <strong>${fmtRs(9000000-d.annualWCP)}</strong> more rolling WCP to also unlock Amsterdam.`;
+    ceoText.innerHTML=`CEO Council Option 2 for <strong>Prague</strong> is met. Add <strong>${fmtRs(CEO_CABINET_OPTION2-d.annualWCP)}</strong> more rolling business to meet the ₹100L Prague + Amsterdam Option 2 gate.`;
     ceoBox.classList.remove('hidden'); ceoBox.classList.add('ok'); ceoBox.classList.remove('warn');
   } else {
-    ceoText.innerHTML=`Shortfall of <strong>${fmtRs(d.ceoShortfall)}</strong> rolling WCP to reach the ₹75L Prague threshold.`;
+    ceoText.innerHTML=`Shortfall of <strong>${fmtRs(d.ceoShortfall)}</strong> to reach the ₹85L WRP Prague Option 2 gate.`;
     ceoBox.classList.remove('hidden'); ceoBox.classList.add('warn'); ceoBox.classList.remove('ok');
   }
 
   // ARDM
   const ardmBox=document.getElementById('ins_ardm'), ardmText=document.getElementById('ins_ardm_text');
   if(d.ardmQualified){
-    ardmText.innerHTML=`Qualified for <strong>promotion to ARDM</strong> - both the ₹12L WCP and 3 L1 recruitment criteria are met.`;
+    ardmText.innerHTML=`The existing calculator's <strong>ARDM business criteria are met</strong> - ₹12L WCP and 3 Quality L1 recruitments.`;
     ardmBox.classList.remove('hidden'); ardmBox.classList.add('ok'); ardmBox.classList.remove('warn');
   } else {
     let parts=[];
     if(!d.ardmWCPmet) parts.push(`<strong>${fmtRs(1200000-d.annualWCP)}</strong> more WCP`);
-    if(!d.ardmL1met) parts.push(`<strong>${3-d.annualL1}</strong> more L1${(3-d.annualL1)>1?'s':''} recruited`);
-    ardmText.innerHTML=`Needs ${parts.join(' and ')} to qualify for ARDM promotion.`;
+    if(!d.ardmL1met) parts.push(`<strong>${3-d.annualL1}</strong> more Quality L1${(3-d.annualL1)>1?'s':''} recruited`);
+    ardmText.innerHTML=`Needs ${parts.join(' and ')} to meet the ARDM business criteria.`;
     ardmBox.classList.remove('hidden'); ardmBox.classList.add('warn'); ardmBox.classList.remove('ok');
   }
 }
@@ -1120,8 +1123,8 @@ function clearAll(){
   document.getElementById('annualWCP').value=0;
   document.getElementById('annualL1').value=0;
   document.querySelectorAll('#periodToggle .seg-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('#periodToggle .seg-btn[data-period="17"]').classList.add('active');
-  currentPeriod=17;
+  document.querySelector('#periodToggle .seg-btn[data-period="15"]').classList.add('active');
+  currentPeriod=15;
   calculate();
 }
 
@@ -1129,10 +1132,10 @@ function setField(id,val){ document.getElementById(id).value = val; }
 
 function loadScenario(key){
   const sc = {
-    solo:      { l1Active:2, avgL1WCP:175000, recruitedL1Count:0, avgRecruitedL1WCP:0,       period:17, encash:true,  topL1:'0', annualWCP:350000,  annualL1:2 },
-    single_l1: { l1Active:0, avgL1WCP:0,      recruitedL1Count:1, avgRecruitedL1WCP:1500000, period:17, encash:true,  topL1:'0', annualWCP:1500000, annualL1:1 },
-    two_l1:    { l1Active:2, avgL1WCP:400000, recruitedL1Count:0, avgRecruitedL1WCP:0,       period:17, encash:true,  topL1:'1', annualWCP:8000000, annualL1:5 },
-    power:     { l1Active:3, avgL1WCP:1300000,recruitedL1Count:1, avgRecruitedL1WCP:1000000, period:31, encash:false, topL1:'3', annualWCP:9500000, annualL1:4 }
+    solo:      { l1Active:2, avgL1WCP:175000, recruitedL1Count:0, avgRecruitedL1WCP:0,       period:15, encash:true,  topL1:'0', annualWCP:350000,   annualL1:0 },
+    single_l1: { l1Active:1, avgL1WCP:0,      recruitedL1Count:1, avgRecruitedL1WCP:1500000, period:15, encash:true,  topL1:'0', annualWCP:1500000,  annualL1:1 },
+    two_l1:    { l1Active:2, avgL1WCP:400000, recruitedL1Count:0, avgRecruitedL1WCP:0,       period:15, encash:true,  topL1:'1', annualWCP:8000000,  annualL1:0 },
+    power:     { l1Active:3, avgL1WCP:1300000,recruitedL1Count:1, avgRecruitedL1WCP:1000000, period:30, encash:false, topL1:'3', annualWCP:10000000, annualL1:4 }
   };
   const s=sc[key]; if(!s) return;
   setField('l1Active', s.l1Active);
